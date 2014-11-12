@@ -138,7 +138,16 @@ Prendre le package fourni par EDB ENTERPRISEDB : [pgdownload](http://www.enterpr
 ##6. Système de synchronisation de fichiers : GIT
 
 - Télécharger et installer : [GIT](http://git-scm.com/downloads).
+- Laisser la configuration par défaut et cocher la case 'Use a TrueType font in all console (not only for Git bash)'.
 - Le livre [Pro Git](http://git-scm.com/book/fr), écrit par Scott Chacon et publié par Apress, est disponible entièrement au format PDF [ICI](http://geekographie.maieul.net/IMG/pdf/progit.fr.pdf).
+
+##7. Système de build : Sencha Cmd
+...
+D:\DONNEES\Workspace\OGAM\website\htdocs\client\ogamDesktop>sencha app build -c
+-e development
+D:\DONNEES\Workspace\OGAM\website\htdocs\client\ogamDesktop>sencha app watch -e
+development
+
 
 
 
