@@ -143,10 +143,15 @@ Prendre le package fourni par EDB ENTERPRISEDB : [pgdownload](http://www.enterpr
 
 ##7. Système de build : Sencha Cmd
 ...
-D:\DONNEES\Workspace\OGAM\website\htdocs\client\ogamDesktop>sencha app build -c
--e development
-D:\DONNEES\Workspace\OGAM\website\htdocs\client\ogamDesktop>sencha app watch -e
-development
+D:\DONNEES\Workspace\OGAM\website\htdocs\client\ogamDesktop>sencha app build -c -e development
+D:\DONNEES\Workspace\OGAM\website\htdocs\client\ogamDesktop>sencha app watch -e development
+Mise à jour de la commande : 
+sencha upgrade --check
+sencha upgrade --check --beta
+Mise à jour d'une application et de son workspace :
+D:\DONNEES\Workspace\OGAM\website\htdocs\client\ogamDesktop>sencha app upgrade -noframework
+Mise à jour d'un pachage :
+D:\DONNEES\Workspace\OGAM\website\htdocs\client\packages\ogamDesktop-theme\sencha package upgrade
 
 
 
