@@ -3,6 +3,7 @@
 ## 1. Récupération du code source
 - Cloner (GIT) le repository d'OGAM dans votre workspace d'éclipse.  
 Voir le site `http://del-9323972.ign.fr/` pour les instructions. **FIXME:** Ce n'est pas correcte pour la documentation publique)
+-Créer un projet dans eclipse. (import/général/existing project...)
 
 - Checkouter (SVN) le projet `libs_java` dans votre workspace d'éclipse (au même niveau que le projet OGAM).  
 `http://ifn-dev/svn/libs%20java/trunk/`
@@ -14,10 +15,10 @@ Voir le site `http://del-9323972.ign.fr/` pour les instructions. **FIXME:** Ce n
 		website/htdocs/custom/public
 		website/htdocs/logs/access.log
 		website/htdocs/logs/error.log
-		website/htdocs/sessions
-		website/htdocs/tmp/database
-		website/htdocs/tmp/language
-		website/htdocs/upload
+		website/htdocs/server/ogamServer/sessions
+		website/htdocs/server/ogamServer/tmp/database
+		website/htdocs/server/ogamServer/tmp/language
+		website/htdocs/server/ogamServer/upload
 
 
 ## 2. Création de la base de donnée
