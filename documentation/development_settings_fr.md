@@ -142,16 +142,38 @@ Prendre le package fourni par EDB ENTERPRISEDB : [pgdownload](http://www.enterpr
 - Le livre [Pro Git](http://git-scm.com/book/fr), écrit par Scott Chacon et publié par Apress, est disponible entièrement au format PDF [ICI](http://geekographie.maieul.net/IMG/pdf/progit.fr.pdf).
 
 ##7. Système de build : Sencha Cmd
-...
-D:\DONNEES\Workspace\OGAM\website\htdocs\client\ogamDesktop>sencha app build -c -e development
-D:\DONNEES\Workspace\OGAM\website\htdocs\client\ogamDesktop>sencha app watch -e development
+
+Build de l'application :
+
+	> D:/DONNEES/Workspace/OGAM/website/htdocs/client/ogamDesktop>sencha app build -c -e development
+
+Build auto de l'application :
+
+	> D:/DONNEES/Workspace/OGAM/website/htdocs/client/ogamDesktop>sencha app watch -e development
+
 Mise à jour de la commande : 
-sencha upgrade --check
-sencha upgrade --check --beta
+
+	> sencha upgrade --check
+	> sencha upgrade --check --beta
+
 Mise à jour d'une application et de son workspace :
-D:\DONNEES\Workspace\OGAM\website\htdocs\client\ogamDesktop>sencha app upgrade -noframework
-Mise à jour d'un pachage :
-D:\DONNEES\Workspace\OGAM\website\htdocs\client\packages\ogamDesktop-theme\sencha package upgrade
+
+	> D:/DONNEES/Workspace/OGAM/website/htdocs/client/ogamDesktop>sencha app upgrade -noframework
+
+Mise à jour d'un package :
+
+	> D:/DONNEES/Workspace/OGAM/website/htdocs/client/packages/ogamDesktop-theme/sencha package upgrade
+
+FAQ:
+
+- La resolution (resolve) lors du build plante :
+
+		> Vérifier dans le fichier "ogamDesktop/.sencha/app/sencha.cfg" vérifier la valeur du paramètre "build.resolve.url".
+		> Lancer la commande "sencha web start", ouvrir l'url "http://localhost:1841" dans un navigateur et vérifier le chargement des fichiers (js (map/get-map-parameters), css...).
+		
+- Le fichier index.html, le fichier js mignifier et le slice des images ne sont pas fait lors du build du développement :
+
+		> Rajouter la configuration suivantes dans le fichier "ogamDesktop/.sencha/app/development.properties" : skip.page=0, skip.js=0, skip.slice=0
 
 
 
