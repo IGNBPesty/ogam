@@ -3,9 +3,9 @@
     Plugiciel : Moteur pour la génération de DDL ANSI (3.2.0 - 05-12-2009), Grandite
 
     Nom de la base de données : "Base de données"
-    Fichier source : "D:\DONNEES\Workspace\OGAM\documentation\2 - Conception\Schémas relationnels\MD OGAM.sms"
+    Fichier source : "d:\donnees\workspace\ogam\documentation\2 - conception\schémas relationnels\md ogam.sms"
 
-    Généré le : 20 avr. 2015 17:22:23
+    Généré le : 1 mai 2015 13:50:53
     Généré par Open ModelSphere Version 3.2"
 ***********************************************************
 
@@ -28,7 +28,7 @@ CREATE TABLE "attribute"
 
 CREATE TABLE "check" 
 (
-    "check" CHARACTER VARYING NOT NULL,
+    "check" SMALLINT NOT NULL,
     step CHARACTER VARYING(32) NOT NULL,
     name CHARACTER VARYING(64) NOT NULL,
     label CHARACTER VARYING(64) NOT NULL,
@@ -43,7 +43,8 @@ CREATE TABLE "class"
     "class" CHARACTER VARYING(32) NOT NULL,
     label CHARACTER VARYING(64) NOT NULL,
     definition CHARACTER VARYING(256) NOT NULL,
-    comment CHARACTER VARYING(256) NOT NULL
+    is_association_class BOOLEAN NOT NULL,
+    comment CHARACTER VARYING(256) NULL
 );
 
 
@@ -73,8 +74,8 @@ CREATE TABLE class_tree
 
 CREATE TABLE code 
 (
-    code CHARACTER VARYING(32) NOT NULL,
     unit CHARACTER VARYING(32) NOT NULL,
+    code CHARACTER VARYING(32) NOT NULL,
     position SMALLINT NOT NULL,
     label CHARACTER VARYING(64) NOT NULL,
     definition CHARACTER VARYING(256) NOT NULL
@@ -164,8 +165,8 @@ CREATE TABLE container_relation
 (
     container_1 CHARACTER VARYING(32) NOT NULL,
     container_2 CHARACTER VARYING(32) NOT NULL,
+    number SMALLINT NOT NULL,
     type CHARACTER VARYING(32) NOT NULL,
-    position SMALLINT NOT NULL,
     is_leaf BOOLEAN NOT NULL,
     multiplicity_1 CHAR(4) NULL,
     multiplicity_2 CHAR(4) NULL,
@@ -227,7 +228,9 @@ CREATE TABLE db_table_relation
 (
     container_1 CHARACTER VARYING(32) NOT NULL,
     container_2 CHARACTER VARYING(32) NOT NULL,
-    join_key CHARACTER VARYING(128) NOT NULL
+    number SMALLINT NOT NULL,
+    join_key_1 CHARACTER VARYING(128) NOT NULL,
+    join_key_2 CHARACTER VARYING(128) NOT NULL
 );
 
 
@@ -237,7 +240,7 @@ CREATE TABLE field
     unit CHARACTER VARYING(32) NOT NULL,
     lot CHARACTER VARYING(32) NOT NULL,
     "attribute" CHARACTER VARYING(32) NOT NULL,
-    is_measure BOOLEAN NOT NULL,
+    field_type CHARACTER VARYING(32) NOT NULL,
     is_contexted BOOLEAN NOT NULL
 );
 
@@ -271,6 +274,8 @@ CREATE TABLE lot
 (
     lot CHARACTER VARYING(32) NOT NULL,
     doc CHARACTER VARYING(32) NULL,
+    label CHARACTER VARYING(64) NULL,
+    definition CHARACTER VARYING(256) NULL,
     is_contexted BOOLEAN NOT NULL
 );
 
@@ -311,7 +316,7 @@ CREATE TABLE process
 CREATE TABLE process_check 
 (
     process CHARACTER VARYING(32) NOT NULL,
-    "check" CHARACTER VARYING NOT NULL
+    "check" SMALLINT NOT NULL
 );
 
 
@@ -337,6 +342,7 @@ CREATE TABLE ui_container_tree
 (
     container_1 CHARACTER VARYING(32) NOT NULL,
     container_2 CHARACTER VARYING(32) NOT NULL,
+    number SMALLINT NOT NULL,
     is_opened BOOLEAN NOT NULL,
     is_default BOOLEAN NOT NULL,
     width SMALLINT NULL,
@@ -368,7 +374,8 @@ CREATE TABLE ui_form_field
     x SMALLINT NULL,
     y SMALLINT NULL,
     is_mandatory BOOLEAN NOT NULL,
-    is_disabled BOOLEAN NOT NULL
+    is_disabled BOOLEAN NOT NULL,
+    is_hidden BOOLEAN NOT NULL
 );
 
 
@@ -450,7 +457,7 @@ ALTER TABLE container
     container)  ;
 ALTER TABLE container_relation 
   ADD CONSTRAINT container_relation_pk PRIMARY KEY (
-    container_1, container_2)  ;
+    container_1, container_2, number)  ;
 ALTER TABLE context_code 
   ADD CONSTRAINT context_code_pk PRIMARY KEY (
     context)  ;
@@ -471,7 +478,7 @@ ALTER TABLE db_table
     container)  ;
 ALTER TABLE db_table_relation 
   ADD CONSTRAINT db_table_relation_pk PRIMARY KEY (
-    container_1, container_2)  ;
+    container_1, container_2, number)  ;
 ALTER TABLE field_context 
   ADD CONSTRAINT field_context_pk PRIMARY KEY (
     context, field)  ;
@@ -510,7 +517,7 @@ ALTER TABLE translation
     db_table, lang, row_pk)  ;
 ALTER TABLE ui_container_tree 
   ADD CONSTRAINT ui_container_tree_pk PRIMARY KEY (
-    container_1, container_2)  ;
+    container_1, container_2, number)  ;
 ALTER TABLE ui_field 
   ADD CONSTRAINT ui_field_pk PRIMARY KEY (
     component)  ;
@@ -529,16 +536,6 @@ ALTER TABLE unit_constraint
 ALTER TABLE unit 
   ADD CONSTRAINT unit_pk PRIMARY KEY (
     unit)  ;
-ALTER TABLE ui_container_tree
-  ADD CONSTRAINT FK_container_relation1 
-    FOREIGN KEY (container_1, container_2)
-      REFERENCES container_relation;
-
-ALTER TABLE ui_object
-  ADD CONSTRAINT FK_container3 
-    FOREIGN KEY (container)
-      REFERENCES container;
-
 ALTER TABLE application_process
   ADD CONSTRAINT FK_application 
     FOREIGN KEY (application)
@@ -632,7 +629,12 @@ ALTER TABLE component
 
 ALTER TABLE db_table_relation
   ADD CONSTRAINT FK_container_relation 
-    FOREIGN KEY (container_1, container_2)
+    FOREIGN KEY (container_1, container_2, number)
+      REFERENCES container_relation;
+
+ALTER TABLE ui_container_tree
+  ADD CONSTRAINT FK_container_relation1 
+    FOREIGN KEY (container_1, container_2, number)
       REFERENCES container_relation;
 
 ALTER TABLE file_container
@@ -642,6 +644,11 @@ ALTER TABLE file_container
 
 ALTER TABLE db_container
   ADD CONSTRAINT FK_container2 
+    FOREIGN KEY (container)
+      REFERENCES container;
+
+ALTER TABLE ui_object
+  ADD CONSTRAINT FK_container3 
     FOREIGN KEY (container)
       REFERENCES container;
 
