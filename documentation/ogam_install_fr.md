@@ -44,17 +44,22 @@ Sous linux jouer dans l'ordre :
 
 - Adapter les chemins dans les ppts de services_config/integration et report generation.
 - Récupérer le projet libs_java au même niveau que le projet OGAM dans le workspace.
-- Sous windows lancer la commande en mode administrateur.
+- Ouvrir une ligne de commande :  
+  Sous windows : Lancer la commande en mode administrateur.
 - Jouer la commande "ant build" dans libs_java.
 - Jouer la commande "ant deploy" dans OGAM\service_integration.
-- Jouer la commande "ant deploy" dans OGAM\service_generation_rapport.
+- Jouer la commande "ant deploy" dans OGAM\service\_generation\_rapport.
+- Jouer la commande "ant deploy" dans OGAM\service_harmonization.
 - Si cela n'a pas déjà été fait créer un utilisateur dans le fichier Tomcat 7.0\conf\tomcat-users.xml
   (ex: <user username="tomcat" password="tomcat" roles="manager-gui,admin-gui"/>)
-- Démarrer Tomcat si cela n'est pas fait et ouvrir l'url: 'http://localhost:8080/' dans un navigateur.
+- Démarrer Tomcat si cela n'est pas fait :  
+  Sous windows : Lancer le programme "SERVICES.MSC" et démarrer le service "Apache Tomcat X.X TomcatX".
+- Ouvrir l'url: 'http://localhost:8080/' dans un navigateur.
 - Cliquer sur le bouton "Manager App" et renseigner le login/mdp de l'utilisateur ajouté.
 - Dans la partie "Deployer" renseigner les trois champs de la partie supérieure pour chaque service nécessaire et cliquer sur "Deployer".
-  Note : Le déploiement seul du fichier war (partie inférieure) ne gère pas le déploiement du fichier xml de configuration.
-  Exemple:
-	- /OGAMIntegrationService
-	- file:///C:\Users\sgalopin\Desktop\webapps\OGAMIntegrationService.xml
-	- file:///C:\Users\sgalopin\Desktop\webapps\OGAMIntegrationService.war
+  Note : Le déploiement seul du fichier war (partie inférieure) ne gère pas le déploiement du fichier xml de configuration.  
+  Exemple:  
+    - /OGAMIntegrationService  
+    - file:///C:\Users\sgalopin\Desktop\webapps\OGAMIntegrationService.xml  
+    - file:///C:\Users\sgalopin\Desktop\webapps\OGAMIntegrationService.war  
+- Vérifier que les fichiers de configuration sont bien déployés dans TOMCAT_PATH\conf\Catalina\localhost.
