@@ -117,3 +117,15 @@ Connection à la base pour créer un utilisateur
 
 
 ### Installation de Mapserver
+
+> sudo apt-get install cgi-mapserver mapserver-bin
+> sudo apt-get install libapache2-mod-fcgid
+
+Test : /usr/lib/cgi-bin/mapserv -v
+
+Utilisation de Fast CGI
+> sudo a2enmod cgi
+> sudo cp /usr/lib/cgi-bin/mapserv /usr/lib/cgi-bin/mapserv.fcgid
+> sudo /etc/init.d/apache2 restart
+
+Test : Appeler l'URL http://ogam-integration.ign.fr/cgi-bin/mapserv.fcgid?
