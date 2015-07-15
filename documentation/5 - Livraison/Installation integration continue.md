@@ -54,8 +54,32 @@ cf http://www.mon-code.net/article/42/installation-et-configuration-de-git-sur-d
 	
 ### Installation de Apache
 
+> sudo apt-get install apache2
+
+Test : Afficher la page "http://ogam-integration.ign.fr/" dans un navigateur
+
+Ajout de l'utilisateur admin dans le groupe "wwww-data"
+> sudo usermod -G www-data -a admin
+
+Vérif que ça a fonctionné
+> id admin
+
+On donne les droits sur le répertoire /var/www/html à admin et à Apache.
+> cd /var/www/
+> sudo chgrp www-data /var/www/html/
+> sudo chmod 775 html/
+
+Test : Copier un fichier dans /var/www/html
 
 ### Installation de PHP
+
+> sudo apt-get install php5
+> sudo /etc/init.d/apache2 restart
+
+Test : 
+Copier un fichier "info.php" dans /var/www/html, avec la commande php_info();
+Afficher la page "http://ogam-integration.ign.fr/info.php"
+
 
 
 ### Installation de PostgreSQL
