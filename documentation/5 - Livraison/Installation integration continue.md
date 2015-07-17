@@ -1,13 +1,14 @@
-# Installation de l'intrégration continue pour le projet OGAM sur une machine Debian.
+# Installation de l'intégration continue pour le projet OGAM sur une machine Debian.
 
+VM Debian 8.0 nue avec un compte "admin" ayant les droits root via sudo.
+
+## Configuration de l'intégration continue
 
 ### Installation de Java
 
 > sudo apt-get install openjdk-7-jdk
 
-Test 
-
-> java -version
+Test : java -version
 
 ### Installation de Jenkins
 
@@ -44,12 +45,46 @@ Dans /etc/default/jenkins il faut aussi ajouter le proxy sinon Jenkins ne voit p
 > JAVA_ARGS="-Dhttp.proxyHost=proxy.ign.fr -Dhttp.proxyPort=3128"
 
 
+Installation de ANT
+
+> sudo apt-get install ant
+
 	
 ### Installation de GIT
 
 cf http://www.mon-code.net/article/42/installation-et-configuration-de-git-sur-debian-et-initialisation-dun-depot-git
 
 > sudo apt-get install git
+
+Création d'un nouveau compte "ogam-ci" dans GitLab.
+
+
+
+
+### Configuration de Jenkins
+
+Dans la partie "Administrer Jenkins" du site, on ajoute les plugins Git 
+
+Cf la config sur le site : http://ogam-integration.ign.fr:8080/job/OGAM_Website/configure
+
+
+
+Ajout des librairies nécessaires "en dur" dans le workspace (en attendant Maven ou gradle).
+
+> cd /var/lib/jenkins/workspace/OGAM_Website/
+> sudo mkdir libraries
+> sudo chown jenkins:jenkins libraries/
+> sudo chmod 775 libraries/
+
+Ajout de l'utilisateur admin dans le groupe "jenkins"
+> sudo usermod -G jenkins -a admin
+
+Recopie de "libs_php" et "libs_java" dans ce répertoire.
+
+> sudo chown -R jenkins:jenkins libraries/
+> sudo chmod -R 775 libraries/
+
+
 	
 	
 ### Installation de Apache
@@ -80,7 +115,13 @@ Test :
 Copier un fichier "info.php" dans /var/www/html, avec la commande php_info();
 Afficher la page "http://ogam-integration.ign.fr/info.php"
 
+Ajout du driver postgresql pour PHP
 
+> sudo apt-get install php5-pgsql
+
+Ajout de XDebug pour avoir le coverage sur les tests unitaires
+
+> sudo apt-get install php5-xdebug
 
 ### Installation de PostgreSQL
 
@@ -114,6 +155,12 @@ Connection à la base pour créer un utilisateur
 
 
 ==> PB, la connexion ne se fait toujours pas depuis PgAdmin avec le compte ogam. Pb de firewall ???
+
+
+
+
+## Installation d'un site OGAM de démo
+
 
 
 ### Installation de Mapserver
