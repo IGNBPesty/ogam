@@ -158,6 +158,10 @@ Connection à la base pour créer un utilisateur
 
 
 
+### Installation de Gradle
+
+> sudo apt-get install gradle
+
 
 ## Installation d'un site OGAM de démo
 
