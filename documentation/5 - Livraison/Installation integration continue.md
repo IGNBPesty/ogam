@@ -154,13 +154,25 @@ Connection à la base pour créer un utilisateur
 > CREATE DATABASE ogam OWNER ogam;	
 
 
-==> PB, la connexion ne se fait toujours pas depuis PgAdmin avec le compte ogam. Pb de firewall ???
+==> Pb, la connexion ne se fait toujours pas depuis PgAdmin avec le compte ogam. Pb de firewall ???
 
 
 
 ### Installation de Gradle
 
 > sudo apt-get install gradle
+
+==> Pb : c'est la version 1.5 qui est sur le repository debian par défaut, il nous faut une 2.x.
+
+> sudo apt-get install software-properties-common
+
+
+Ajout d'un repositoy PPA
+> sudo su
+> export https_proxy=https://proxy.ign.fr:3128/
+> add-apt-repository ppa:cwchien/gradle
+
+==> Ne fonctionne pas à cause du proxy
 
 
 ## Installation d'un site OGAM de démo
