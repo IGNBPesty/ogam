@@ -128,7 +128,8 @@ Ajout de XDebug pour avoir le coverage sur les tests unitaires
 cf https://wiki.debian.org/PostgreSql
 
 > sudo apt-get install postgresql
-
+> sudo apt-get install postgresql-9.4-postgis-2.1
+> sudo apt-get install postgresql-contrib 
 
 Edition du pg_hba.conf
 > sudo nano /etc/postgresql/9.4/main/pg_hba.conf
@@ -137,6 +138,8 @@ pour autoriser les connexions en local
 local   all             all                                  trust	
 pour l'utilisateur ogam 	
 host    ogam     ogam                   0.0.0.0/0       md5	
+
+Et ajout des accès externes avec le compte ogam
 
 
 Edition du postgresql.conf
@@ -152,9 +155,15 @@ Connection à la base pour créer un utilisateur
 
 > CREATE USER ogam WITH PASSWORD 'ogam';	
 > CREATE DATABASE ogam OWNER ogam;	
+> \q
+
+> sudo -u postgres psql	-d ogam
+> CREATE EXTENSION adminpack;
+> CREATE EXTENSION postgis;
+> CREATE EXTENSION postgis_topology;
+> \q
 
 
-==> Pb, la connexion ne se fait toujours pas depuis PgAdmin avec le compte ogam. Pb de firewall ???
 
 
 
@@ -164,15 +173,29 @@ Connection à la base pour créer un utilisateur
 
 ==> Pb : c'est la version 1.5 qui est sur le repository debian par défaut, il nous faut une 2.x.
 
+
+
+Ajout d'un repository PPA
 > sudo apt-get install software-properties-common
-
-
-Ajout d'un repositoy PPA
 > sudo su
-> export https_proxy=https://proxy.ign.fr:3128/
+> export https_proxy=http://proxy.ign.fr:3128/
+> export http_proxy=http://proxy.ign.fr:3128/
 > add-apt-repository ppa:cwchien/gradle
 
-==> Ne fonctionne pas à cause du proxy
+> sudo nano /etc/apt/sources.list.d/cwchien-gradle-jessie.list              remplacer jessy par wily
+
+> sudo apt-get update
+> sudo apt-get install gradle
+
+
+
+
+Mise à jour des droits
+> cd /var/lib/jenkins/workspace
+> sudo chmod 775 OGAM_Common/
+> sudo chmod 775 OGAM_Harmonization/
+> sudo chmod 775 OGAM_Integration/
+> sudo chmod 775 OGAM_Website/
 
 
 ## Installation d'un site OGAM de démo
