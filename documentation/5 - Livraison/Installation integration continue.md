@@ -296,11 +296,38 @@ La connexion avec l'utilisateur admin / admin doit fonctionner
 Cliquer sur le menu "Vérifier la configuration", tout doit être OK
 
 
+### Installation de Tomcat
+
+> sudo apt-get install tomcat7 tomcat7-admin
+> sudo apt-get install tomcat7-admin tomcat7-examples tomcat7-docs
+
+Test: http://ogam-integration.ign.fr:8080/   vérifier qu'on a bien la page It works !
 
 
+Création d'un répertoire pour le dépot des fichiers war.
 
-### Configuration du service d'intégration de données
+> cd /var/lib/tomcat7/
+> sudo mkdir staging
+> sudo chmod 775 staging/
+> sudo chown tomcat7:tomcat7 staging/
+
+Ajout de l'utilisateur admin dans le groupe "tomcat7"
+> sudo usermod -G tomcat7 -a admin
+
+On peut maintenant recopier des fichiers dans ce répertoire /var/lib/tomcat7/staging/ via WinSCP.
+
+Config des utilisateurs Tomcat
+> sudo nano /etc/tomcat7/tomcat-users.xml
+
+Ajout les librairies supplémentaires
+Les librairies pour Tomcat se trouvent dans /usr/share/tomcat7/lib
+Y copier "activation.jar", "mail.jar" et "postgresql-9.3-1101.jdbc4.jar".
+
+
+### Configuration des services Tomcat
 
 Après execution de la tâche "deploy" du script de build de "service_integration"
 
-Recopier dans Tomcat le fichier war
+Recopier dans /var/lib/tomcat7/staging/ les fichiers war à déployer avec les fichier xml.
+Utiliser la console d'administration de Tomcat pour déployer le service.
+
