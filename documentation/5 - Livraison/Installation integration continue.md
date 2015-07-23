@@ -42,12 +42,31 @@ Ajout du paquet jenkins à apt-get
 
 Dans /etc/default/jenkins il faut aussi ajouter le proxy sinon Jenkins ne voit pas ses plugins.
 
-> JAVA_ARGS="-Dhttp.proxyHost=proxy.ign.fr -Dhttp.proxyPort=3128"
+> JAVA_ARGS="-Dhttp.proxyHost=proxy.ign.fr -Dhttp.proxyPort=3128 -Dhttps.proxyHost=proxy.ign.fr -Dhttps.proxyPort=3128"
 
 
-Installation de ANT
+Modification du port par défaut pour Jenkins
+cf https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+on+Ubuntu
+
+> sudo nano /etc/default/jenkins 
+
+Remplacer HTTP_PORT=8080 par HTTP_PORT=8081
+
+Modifier la dernière ligne
+JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT --ajp13Port=$AJP_PORT --prefix=/jenkins"
+
+L'URL devient 
+http://ogam-integration.ign.fr:8081/jenkins/
+
+
+
+### Installation de ANT
 
 > sudo apt-get install ant
+
+
+
+
 
 	
 ### Installation de GIT
@@ -61,13 +80,12 @@ Création d'un nouveau compte "ogam-ci" dans GitLab.
 
 
 
+
 ### Configuration de Jenkins
 
 Dans la partie "Administrer Jenkins" du site, on ajoute les plugins Git 
 
 Cf la config sur le site : http://ogam-integration.ign.fr:8080/job/OGAM_Website/configure
-
-
 
 Ajout des librairies nécessaires "en dur" dans le workspace (en attendant Maven ou gradle).
 
@@ -83,6 +101,7 @@ Recopie de "libs_php" et "libs_java" dans ce répertoire.
 
 > sudo chown -R jenkins:jenkins libraries/
 > sudo chmod -R 775 libraries/
+
 
 
 	
@@ -105,6 +124,23 @@ On donne les droits sur le répertoire /var/www/html à admin et à Apache.
 > sudo chmod 775 html/	
 
 Test : Copier un fichier dans /var/www/html
+
+
+### Mise en place d'un proxy apache pour Jenkins
+
+cf https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+on+Ubuntu
+
+> sudo a2enmod proxy
+> sudo a2enmod proxy_http
+
+Modification du fichier ogam.conf (voir plus bas) pour ajouter les commandes 
+ 		# Proxy pour Jenkins
+        ProxyPass               /jenkins        http://ogam-integration.ign.fr:8081/jenkins/
+        ProxyPassReverse        /jenkins        http://ogam-integration.ign.fr:8081/jenkins/
+
+
+> sudo /etc/init.d/apache2 restart
+
 
 ### Installation de PHP
 
@@ -215,3 +251,56 @@ Utilisation de Fast CGI
 > sudo /etc/init.d/apache2 restart
 
 Test : Appeler l'URL http://ogam-integration.ign.fr/cgi-bin/mapserv.fcgid?
+
+### Copie des fichiers PHP
+
+Après execution de la tâche "deploy" du script de build, on recopie le répertoire généré dans /var/www/html
+
+On donne l'accès à Apache
+> cd /var/www/
+> sudo chown root:www-data -R html/
+> sudo chmod 775 -R html/
+
+
+### Configuration de Apache
+
+Ajout d'un nouveau fichier ogam.conf dans /etc/apache2/sites-enabled   (cf le fichier)
+
+Activation de Mod_Rewrite
+> sudo a2enmod rewrite 
+
+Activation de la nouvelle conf
+> sudo a2ensite ogam
+
+Désactivation de la conf par défaut
+> sudo a2dissite 000-default
+
+Redémarrage de Apache
+> sudo /etc/init.d/apache2 restart
+
+
+Test : Appeler l'URL http://ogam-integration.ign.fr/
+On doit avoir une page blanche (erreur PHP) au lieu de la page par défaut de Debian
+
+### Configuration du site OGAM
+
+Recopier la configuration /ogam/application/configs/application.ini
+
+Modifier l'url de base dans le fichier de config
+> resources.frontController.baseUrl = "/"; The trailing slash is important
+
+
+Test : Appeler l'URL http://ogam-integration.ign.fr/
+On doit avoir la page d'accueil du site OGAM
+La connexion avec l'utilisateur admin / admin doit fonctionner
+Cliquer sur le menu "Vérifier la configuration", tout doit être OK
+
+
+
+
+
+### Configuration du service d'intégration de données
+
+Après execution de la tâche "deploy" du script de build de "service_integration"
+
+Recopier dans Tomcat le fichier war
