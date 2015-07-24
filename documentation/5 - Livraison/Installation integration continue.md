@@ -343,7 +343,25 @@ Après execution de la tâche "deploy" du script de build de "service_integratio
 
 Recopier dans /var/lib/tomcat7/staging/ les fichiers war à déployer avec les fichier xml.
 
-Utiliser la console d'administration de Tomcat pour déployer le service.
+Utiliser la console d'administration de Tomcat pour déployer les services.
 
 
+### Configuration de Mapserver
 
+Copier le fichier de config mapserv "ogam.map" et les fontes dans un répertoire sur le serveur.
+
+> cd /var/www/html
+> sudo mkdir mapserv
+> sudo chmod 775 mapserv
+> sudo chown root:www-data mapserv 
+
+
+Mettre à jour le fichier "ogam.map" avec les bons chemins et la config pour la base de donnée.
+
+> sudo nano /var/www/html/mapserv/ogam.map
+
+Mettre à jour les chemins dans la table "mapping.layer_service"
+
+Test : Appeler http://ogam-integration.ign.fr/cgi-bin/mapserv.fcgid?map=/var/www/html/mapserv/ogam.map&LAYERS=nuts_0&TRANSPARENT=TRUE&FORMAT=image%2FPNG&ISHIDDEN=false&ISDISABLED=false&ISCHECKED=true&ACTIVATETYPE=NONE&HASSLD=false&SESSION_ID=e5kvmhtt062k941smr07tdg2qd93165o&PROVIDER_ID=1&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&SRS=EPSG%3A3035&BBOX=1690000,1000000,6099719.8409735,5409719.8409735&WIDTH=500&HEIGHT=500
+
+On doit avoir la carte de l'europe
