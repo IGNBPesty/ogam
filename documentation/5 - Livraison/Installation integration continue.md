@@ -289,6 +289,13 @@ Recopier la configuration /ogam/application/configs/application.ini
 Modifier l'url de base dans le fichier de config
 > resources.frontController.baseUrl = "/"; The trailing slash is important
 
+Mise en place de connexion persistantes
+> resources.db.params.persistent = true
+
+Augmentation du nombre de connexions max dans PostgreSQL (pour les tests unitaires)
+> sudo nano /etc/postgresql/9.4/main/postgresql.conf
+> max_connections = 200
+
 
 Test : Appeler l'URL http://ogam-integration.ign.fr/
 On doit avoir la page d'accueil du site OGAM
@@ -324,10 +331,19 @@ Les librairies pour Tomcat se trouvent dans /usr/share/tomcat7/lib
 Y copier "activation.jar", "mail.jar" et "postgresql-9.3-1101.jdbc4.jar".
 
 
+Création d'un répertoire temporaire pour l'upload de fichier
+> cd /var/tmp
+> sudo mkdir ogam_upload
+> sudo chmod 664 ogam_upload
+> sudo chown tomcat7:tomcat7 ogam_upload 
+
 ### Configuration des services Tomcat
 
 Après execution de la tâche "deploy" du script de build de "service_integration"
 
 Recopier dans /var/lib/tomcat7/staging/ les fichiers war à déployer avec les fichier xml.
+
 Utiliser la console d'administration de Tomcat pour déployer le service.
+
+
 
