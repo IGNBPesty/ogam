@@ -365,3 +365,39 @@ Mettre à jour les chemins dans la table "mapping.layer_service"
 Test : Appeler http://ogam-integration.ign.fr/cgi-bin/mapserv.fcgid?map=/var/www/html/mapserv/ogam.map&LAYERS=nuts_0&TRANSPARENT=TRUE&FORMAT=image%2FPNG&ISHIDDEN=false&ISDISABLED=false&ISCHECKED=true&ACTIVATETYPE=NONE&HASSLD=false&SESSION_ID=e5kvmhtt062k941smr07tdg2qd93165o&PROVIDER_ID=1&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&SRS=EPSG%3A3035&BBOX=1690000,1000000,6099719.8409735,5409719.8409735&WIDTH=500&HEIGHT=500
 
 On doit avoir la carte de l'europe
+
+
+
+### Installation de Tilecache
+
+Récupérer l'archive sur le site de tilecache.
+Copier le fichier dans /tmp par exemple/
+
+> sudo mv tilecache-2.11.tar.gz /var/www/
+> cd /var/www/
+> sudo tar -zvxf tilecache-2.11.tar.gz
+> sudo chown root:www-data -R tilecache-2.11
+> sudo chmod 775 -R tilecache-2.11/
+> sudo mv tilecache-2.11/ tilecache
+
+Création d'un répertoire pour le cache
+> cd /var/www/tilecache
+> sudo mkdir cache
+> sudo chown root:www-data -R cache
+> sudo chmod 775 -R cache/
+
+Modif de la config Apache
+> sudo nano /etc/apache2/sites-enabled/ogam.conf
+
+
+Modif de la config Tilecache
+> sudo nano /var/www/tilecache/tilecache.cfg
+
+Test : Appeler http://ogam-integration.ign.fr/cgi-bin/tilecache, on doit avoir un XML de résultat vide
+
+Installation de python imaging pour activer les metatiles
+> sudo apt-get install python-imaging
+
+
+Note : J'ai du récupérer la version de Tilecache présente sur le serveur Eforest car apparemment la dernière version dispo sur
+le site web provoque un bug de calcul de coordonnée quand on zoom (cf http://osgeo-org.1560.x6.nabble.com/Current-x-value-is-too-far-from-tile-corner-x-td3964919.html). 
