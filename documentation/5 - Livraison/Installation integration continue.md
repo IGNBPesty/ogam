@@ -163,9 +163,9 @@ Ajout de XDebug pour avoir le coverage sur les tests unitaires
 
 cf https://wiki.debian.org/PostgreSql
 
-> sudo apt-get install postgresql
-> sudo apt-get install postgresql-9.4-postgis-2.1
-> sudo apt-get install postgresql-contrib 
+> sudo apt-get install postgresql 
+> sudo apt-get install postgresql-9.4-postgis-2.1 	
+> sudo apt-get install postgresql-contrib 	
 
 Edition du pg_hba.conf
 > sudo nano /etc/postgresql/9.4/main/pg_hba.conf
