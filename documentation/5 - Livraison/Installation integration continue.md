@@ -163,7 +163,7 @@ Ajout de XDebug pour avoir le coverage sur les tests unitaires
 
 cf https://wiki.debian.org/PostgreSql
 
-> sudo apt-get install postgresql 
+> sudo apt-get install postgresql 	
 > sudo apt-get install postgresql-9.4-postgis-2.1 	
 > sudo apt-get install postgresql-contrib 	
 
