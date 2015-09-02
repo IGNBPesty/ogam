@@ -279,17 +279,17 @@ ALTER TABLE component
 
 ALTER TABLE db_table_relation
   ADD CONSTRAINT FK_container_relation 
-    FOREIGN KEY (container_1, container_2, relation_set, relation_number)
+    FOREIGN KEY (container_1, container_2, relation_set, "order")
       REFERENCES container_relation;
 
 ALTER TABLE ui_container_tree
   ADD CONSTRAINT FK_container_relation1 
-    FOREIGN KEY (container_1, container_2, relation_set, relation_number)
+    FOREIGN KEY (container_1, container_2, relation_set, "order")
       REFERENCES container_relation;
 
 ALTER TABLE ui_object_tree
   ADD CONSTRAINT FK_container_relation2 
-    FOREIGN KEY (container_1, container_2, relation_set, relation_number)
+    FOREIGN KEY (container_1, container_2, relation_set, "order")
       REFERENCES container_relation;
 
 ALTER TABLE file_container

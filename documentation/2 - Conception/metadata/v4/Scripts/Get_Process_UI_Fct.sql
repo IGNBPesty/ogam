@@ -1,4 +1,4 @@
-﻿set search_path = metadata;
+﻿set search_path = metadata, public;
 /*
 DROP TYPE IF EXISTS json_container;
 CREATE TYPE json_container AS (
@@ -58,14 +58,14 @@ WITH RECURSIVE object_tree AS (
 	WITH RECURSIVE container_tree AS (
 		-- *** 1. Récupération des objets déclarés dans l'arbre des objets du processus
 		WITH process_objects AS (
-			SELECT DISTINCT relation_set, unnest(regexp_split_to_array(objects_types, ',')) as container
+			SELECT DISTINCT relation_set, unnest(regexp_split_to_array(objects_types, ',')) as container, "order"
 			FROM process_relation_set prs
 			JOIN container_relation cr on cr.relation_set = prs.container_relation_set
-			JOIN ui_object_tree using(relation_set,container_1,container_2,relation_number)
+			JOIN ui_object_tree using(relation_set,container_1,container_2,"order")
 			WHERE prs.process = 'CONTACT_SITE_EDITION'
 		)
 		-- *** 2. Récupération de l'arbre d'interface pour chaque objet
-		SELECT po.relation_set, c.container as object_ct, c.container, '*'::character varying(32) as parent_ct, 0 as depth, row_to_json(row(c.container, c.type, c.subtype, c.label, c.definition, '{}')::json_container)::jsonb as container_json, false as is_leaf--, '{}'::text[] as path
+		SELECT po.relation_set, c.container as object_ct, c.container, '*'::character varying(32) as parent_ct, 0 as depth, po.order, row_to_json(row(c.container, c.type, c.subtype, c.label, c.definition, '{}')::json_container)::jsonb as container_json, false as is_leaf--, '{}'::text[] as path
 		FROM process_objects po
 		JOIN container c using(container)
 		UNION
@@ -73,28 +73,32 @@ WITH RECURSIVE object_tree AS (
 			-- *** 2.1 Création d'une nouvelle table pour parer la limitation d'usage sur la table récursive (container_tree)
 			WITH ct_last_rows AS ( SELECT * FROM container_tree )
 			-- *** 2.2 Récupération des containers
-			SELECT ct.relation_set, ct.object_ct, c2.container, ct.container as parent_ct, ct.depth + 1 as depth, row_to_json(row(c2.container, c2.type, c2.subtype, c2.label, c2.definition, '{}')::json_container)::jsonb as container_json, ((SELECT count(*) FROM (SELECT container_1 FROM ui_container_tree count_uict WHERE count_uict.container_1 = c2.container and count_uict.relation_set = ct.relation_set UNION SELECT component FROM component count_c WHERE count_c.container = c2.container) as foo)::int = 0)::boolean as is_leaf--, path || ct.container::text
+			SELECT ct.relation_set, ct.object_ct, c2.container, ct.container as parent_ct, ct.depth + 1 as depth, uict.order, row_to_json(row(c2.container, c2.type, c2.subtype, c2.label, c2.definition, '{}')::json_container)::jsonb as container_json, ((SELECT count(*) FROM (SELECT container_1 FROM ui_container_tree count_uict WHERE count_uict.container_1 = c2.container and count_uict.relation_set = ct.relation_set UNION SELECT component FROM component count_c WHERE count_c.container = c2.container) as foo)::int = 0)::boolean as is_leaf--, path || ct.container::text
 			FROM ct_last_rows as ct
 			JOIN ui_container_tree uict on uict.container_1 = ct.container and uict.relation_set = ct.relation_set
 			JOIN container AS c2 on c2.container = uict.container_2
 			UNION
 			-- *** 2.3 Récupération des champs de formulaire
-			SELECT ct.relation_set, ct.object_ct, c.component, ct.container as parent_ct, ct.depth + 1 as depth, row_to_json(row(c.component, c.type, c.label, c.definition, c.position, c.field, uif.subtype, uif.field_type, uif.default_value, uif.default_text, uif.decimals, uif.mask, uiff.subposition, uiff.width, uiff.height, uiff.x, uiff.y, uiff.is_mandatory, uiff.is_disabled, uiff.is_hidden)::json_ui_form_field)::jsonb as container_json, true as is_leaf--, path || ct.container::text
+			SELECT ct.relation_set, ct.object_ct, c.component, ct.container as parent_ct, ct.depth + 1 as depth, c.order, row_to_json(row(c.component, c.type, COALESCE(c.label,a.label), COALESCE(c.definition,a.definition), c.order, c.field, uif.subtype, uif.field_type, uif.default_value, uif.default_text, uif.decimals, uif.mask, uiff.suborder, uiff.width, uiff.height, uiff.x, uiff.y, uiff.is_mandatory, uiff.is_disabled, uiff.is_hidden)::json_ui_form_field)::jsonb as container_json, true as is_leaf--, path || ct.container::text
 			FROM ct_last_rows as ct
 			JOIN component c on c.container = ct.container
+			LEFT JOIN field f on f.field = c.field
+			LEFT JOIN attribute a on a.attribute = f.attribute
 			JOIN ui_field uif on uif.component = c.component
 			INNER JOIN ui_form_field uiff on uiff.component = c.component
 			UNION
 			-- *** 2.4 Récupération des champs de requête
-			SELECT ct.relation_set, ct.object_ct, c.component, ct.container as parent_ct, ct.depth + 1 as depth, row_to_json(row(c.component, c.type, c.label, c.definition, c.position, c.field, uif.subtype, uif.field_type, uif.default_value, uif.default_text, uif.decimals, uif.mask, uirf.is_criteria, uirf.is_column, uirf.is_default_criteria, uirf.is_default_column)::json_ui_request_field)::jsonb as container_json, true as is_leaf--, path || ct.container::text
+			SELECT ct.relation_set, ct.object_ct, c.component, ct.container as parent_ct, ct.depth + 1 as depth, c.order, row_to_json(row(c.component, c.type, COALESCE(c.label,a.label), COALESCE(c.definition,a.definition), c.order, c.field, uif.subtype, uif.field_type, uif.default_value, uif.default_text, uif.decimals, uif.mask, uirf.is_criteria, uirf.is_column, uirf.is_default_criteria, uirf.is_default_column)::json_ui_request_field)::jsonb as container_json, true as is_leaf--, path || ct.container::text
 			FROM ct_last_rows as ct
 			JOIN component c on c.container = ct.container
+			LEFT JOIN field f on f.field = c.field
+			LEFT JOIN attribute a on a.attribute = f.attribute
 			JOIN ui_field uif on uif.component = c.component
 			INNER JOIN ui_request_field uirf on uirf.component = c.component
 		)
 	) -- SELECT * FROM container_tree order by object_ct, depth ASC
 	-- *** 3. Transformation en JSON de l'arbre d'interface pour chaque objet
-	SELECT object_ct, container, parent_ct, container_json::jsonb, depth as ct_depth, (SELECT MAX(depth) FROM container_tree) as depth, '' as debug
+	SELECT object_ct, container, parent_ct, container_json::jsonb, depth as ct_depth, (SELECT MAX(depth) FROM container_tree) as depth, "order", '' as debug
 	FROM container_tree
 	WHERE is_leaf
 	UNION
@@ -102,19 +106,19 @@ WITH RECURSIVE object_tree AS (
 		-- *** 3.1 Création d'une nouvelle table pour parer la limitation d'usage sur la table récursive (object_tree)
 		WITH ot_last_rows AS ( SELECT * FROM object_tree )
 		-- *** 3.2 Agrégation et incorporation des JSON pour la profondeur en cours
-		SELECT ct.object_ct, ct.container, ct.parent_ct, (json_merge(ct.container_json::json, json_build_object('children',(json_agg(otlr.container_json) OVER(PARTITION BY ct.object_ct, ct.container, ct.depth order by ct.depth DESC)))))::jsonb as container_json, ct.depth as ct_depth, otlr.ct_depth - 1 as depth, ''
+		SELECT ct.object_ct, ct.container, ct.parent_ct, (json_merge(ct.container_json::json, json_build_object('children',(json_agg(otlr.container_json ) OVER(PARTITION BY ct.object_ct, ct.container, ct.depth ORDER BY otlr.order ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)))))::jsonb as container_json, ct.depth as ct_depth, otlr.ct_depth - 1 as depth, ct.order, ''
 		FROM ot_last_rows otlr
 		JOIN container_tree ct on ct.container = otlr.parent_ct and ct.object_ct = otlr.object_ct
 		WHERE otlr.ct_depth = otlr.depth
 		UNION
 		-- *** 3.3 Récupération des containers feuilles encore non traités
-		SELECT ct.object_ct, ct.container, ct.parent_ct, ct.container_json::jsonb, ct.depth as ct_depth,  otlr.depth - 1 as depth, 'Récupération'
+		SELECT ct.object_ct, ct.container, ct.parent_ct, ct.container_json::jsonb, ct.depth as ct_depth,  otlr.depth - 1 as depth, ct.order, 'Récupération'
 		FROM ot_last_rows otlr
 		JOIN container_tree ct on ct.container = otlr.container and ct.object_ct = otlr.object_ct
 		WHERE ct.is_leaf and otlr.ct_depth != otlr.depth
 	)	
 )
--- SELECT * FROM object_tree ORDER BY object_ct, depth DESC, ct_depth DESC, debug ASC;
+-- SELECT * FROM object_tree ORDER BY object_ct, depth DESC, ct_depth DESC, container ASC, debug ASC;
 SELECT parent_ct as object, container_json as ui_json FROM object_tree WHERE ct_depth = 1;
 
 /* https://gist.github.com/matheusoliveira/9488951 */

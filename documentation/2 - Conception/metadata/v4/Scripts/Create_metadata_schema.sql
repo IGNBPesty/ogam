@@ -3,9 +3,9 @@
     Plugiciel : Moteur pour la génération de DDL ANSI (3.2.0 - 05-12-2009), Grandite
 
     Nom de la base de données : "Base de données"
-    Fichier source : "D:\DONNEES\Workspace\OGAM\documentation\2 - Conception\Schémas relationnels\md ogam.sms"
+    Fichier source : "D:\DONNEES\Workspace\OGAM\documentation\2 - Conception\metadata\Schémas relationnels\MD OGAM.sms"
 
-    Généré le : 1 juin 2015 13:48:07
+    Généré le : 1 sept. 2015 11:35:31
     Généré par Open ModelSphere Version 3.2"
 ***********************************************************
 
@@ -136,7 +136,7 @@ CREATE TABLE component
     type CHARACTER VARYING(32) NOT NULL,
     label CHARACTER VARYING(64) NULL,
     definition CHARACTER VARYING(256) NULL,
-    position SMALLINT NOT NULL,
+    "order" SMALLINT NOT NULL,
     comment CHARACTER VARYING(256) NULL,
     container CHARACTER VARYING(32) NOT NULL,
     field CHARACTER VARYING(32) NULL
@@ -178,7 +178,7 @@ CREATE TABLE container_relation
     relation_set CHARACTER VARYING(32) NOT NULL,
     container_1 CHARACTER VARYING(32) NOT NULL,
     container_2 CHARACTER VARYING(32) NOT NULL,
-    relation_number SMALLINT NOT NULL,
+    "order" SMALLINT NOT NULL,
     type CHARACTER VARYING(32) NOT NULL,
     is_leaf BOOLEAN NOT NULL,
     multiplicity_1 CHAR(4) NULL,
@@ -241,7 +241,7 @@ CREATE TABLE db_table_relation
     relation_set CHARACTER VARYING(32) NOT NULL,
     container_1 CHARACTER VARYING(32) NOT NULL,
     container_2 CHARACTER VARYING(32) NOT NULL,
-    relation_number SMALLINT NOT NULL,
+    "order" SMALLINT NOT NULL,
     join_key_1 CHARACTER VARYING(128) NOT NULL,
     join_key_2 CHARACTER VARYING(128) NOT NULL
 );
@@ -363,7 +363,7 @@ CREATE TABLE ui_container_tree
     relation_set CHARACTER VARYING(32) NOT NULL,
     container_1 CHARACTER VARYING(32) NOT NULL,
     container_2 CHARACTER VARYING(32) NOT NULL,
-    relation_number SMALLINT NOT NULL,
+    "order" SMALLINT NOT NULL,
     is_opened BOOLEAN NOT NULL,
     is_default BOOLEAN NOT NULL,
     width SMALLINT NULL,
@@ -388,7 +388,7 @@ CREATE TABLE ui_field
 CREATE TABLE ui_form_field 
 (
     component CHARACTER VARYING(32) NOT NULL,
-    subposition SMALLINT NULL,
+    suborder SMALLINT NULL,
     width SMALLINT NULL,
     height SMALLINT NULL,
     x SMALLINT NULL,
@@ -412,7 +412,7 @@ CREATE TABLE ui_object_tree
     relation_set CHARACTER VARYING(32) NOT NULL,
     container_1 CHARACTER VARYING(32) NOT NULL,
     container_2 CHARACTER VARYING(32) NOT NULL,
-    relation_number SMALLINT NOT NULL,
+    "order" SMALLINT NOT NULL,
     label CHARACTER VARYING(64) NOT NULL,
     group_by_columns CHARACTER VARYING(64) NULL,
     objects_types CHARACTER VARYING(64) NULL,
@@ -493,7 +493,7 @@ ALTER TABLE container
     container)  ;
 ALTER TABLE container_relation 
   ADD CONSTRAINT container_relation_pk PRIMARY KEY (
-    container_1, container_2, relation_set, relation_number)  ;
+    container_1, container_2, relation_set, "order")  ;
 ALTER TABLE context_code 
   ADD CONSTRAINT context_code_pk PRIMARY KEY (
     context)  ;
@@ -514,7 +514,7 @@ ALTER TABLE db_table
     container)  ;
 ALTER TABLE db_table_relation 
   ADD CONSTRAINT db_table_relation_pk PRIMARY KEY (
-    container_1, container_2, relation_set, relation_number)  ;
+    container_1, container_2, relation_set, "order")  ;
 ALTER TABLE field_context 
   ADD CONSTRAINT field_context_pk PRIMARY KEY (
     context, field)  ;
@@ -556,7 +556,7 @@ ALTER TABLE translation
     db_table, lang, row_pk)  ;
 ALTER TABLE ui_container_tree 
   ADD CONSTRAINT ui_container_tree_pk PRIMARY KEY (
-    container_1, container_2, relation_set, relation_number)  ;
+    container_1, container_2, relation_set, "order")  ;
 ALTER TABLE ui_field 
   ADD CONSTRAINT ui_field_pk PRIMARY KEY (
     component)  ;
@@ -568,7 +568,7 @@ ALTER TABLE ui_object
     container)  ;
 ALTER TABLE ui_object_tree 
   ADD CONSTRAINT ui_object_tree_pk PRIMARY KEY (
-    container_1, container_2, relation_set, relation_number)  ;
+    container_1, container_2, relation_set, "order")  ;
 ALTER TABLE ui_request_field 
   ADD CONSTRAINT ui_request_field_pk PRIMARY KEY (
     component)  ;
@@ -681,17 +681,17 @@ ALTER TABLE component
 
 ALTER TABLE db_table_relation
   ADD CONSTRAINT FK_container_relation 
-    FOREIGN KEY (container_1, container_2, relation_set, relation_number)
+    FOREIGN KEY (container_1, container_2, relation_set, "order")
       REFERENCES container_relation;
 
 ALTER TABLE ui_container_tree
   ADD CONSTRAINT FK_container_relation1 
-    FOREIGN KEY (container_1, container_2, relation_set, relation_number)
+    FOREIGN KEY (container_1, container_2, relation_set, "order")
       REFERENCES container_relation;
 
 ALTER TABLE ui_object_tree
   ADD CONSTRAINT FK_container_relation2 
-    FOREIGN KEY (container_1, container_2, relation_set, relation_number)
+    FOREIGN KEY (container_1, container_2, relation_set, "order")
       REFERENCES container_relation;
 
 ALTER TABLE file_container
