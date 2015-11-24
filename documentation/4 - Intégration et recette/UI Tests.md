@@ -144,4 +144,5 @@ Une autre entrée du blog Sencha qui évoque Siesta, Selenium et CasperJS :
 [https://www.sencha.com/blog/ui-testing-a-sencha-app-3/](https://www.sencha.com/blog/ui-testing-a-sencha-app-3/)
 
 
-
+En résumé, j'ai l'impression qu'il faudrait acheter une license pour Siesta.
+Une petite vidéo : [https://vimeo.com/98664641](https://vimeo.com/98664641).
