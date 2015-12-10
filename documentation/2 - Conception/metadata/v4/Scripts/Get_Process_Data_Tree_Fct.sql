@@ -19,7 +19,6 @@ CREATE SEQUENCE ui_object_tree_tmp_order_seq
 ALTER TABLE ui_object_tree_tmp_order_seq
   OWNER TO postgres;
 
-
 -- DROP TYPE IF EXISTS object_node;
 CREATE TYPE object_node AS (
 	code character varying(32),
@@ -30,6 +29,7 @@ CREATE TYPE object_node AS (
 	object_type character varying(32),
 	object_pk integer
 );
+
 -- DROP TYPE IF EXISTS exec_sql_return;
 CREATE TYPE exec_sql_return AS (
 	label character varying(64),
@@ -41,6 +41,7 @@ CREATE TYPE json_object AS (
 	type character varying(32),
 	pk integer
 );
+
 -- DROP TYPE IF EXISTS json_node;
 CREATE TYPE json_node AS (
 	id character varying(32),
