@@ -97,6 +97,10 @@ Ajout des librairies nécessaires "en dur" dans le workspace (en attendant Maven
 Ajout de l'utilisateur admin dans le groupe "jenkins"
 > sudo usermod -G jenkins -a admin
 
+Ajout de l'utilisateur jenkins dans le groupe "www-data"
+> sudo usermod -G www-data -a jenkins
+
+
 Recopie de "libs_php" et "libs_java" dans ce répertoire.
 
 > sudo chown -R jenkins:jenkins libraries/
