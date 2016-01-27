@@ -163,6 +163,12 @@ Ajout de XDebug pour avoir le coverage sur les tests unitaires
 
 > sudo apt-get install php5-xdebug
 
+Ajout de GD pour l'export PDF de la fiche de détail
+
+> sudo apt-get install php5-gd
+
+
+
 ### Installation de PostgreSQL
 
 cf https://wiki.debian.org/PostgreSql
