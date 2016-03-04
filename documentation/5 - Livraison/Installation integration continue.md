@@ -97,6 +97,10 @@ Ajout des librairies nécessaires "en dur" dans le workspace (en attendant Maven
 Ajout de l'utilisateur admin dans le groupe "jenkins"
 > sudo usermod -G jenkins -a admin
 
+Ajout de l'utilisateur jenkins dans le groupe "www-data"
+> sudo usermod -G www-data -a jenkins
+
+
 Recopie de "libs_php" et "libs_java" dans ce répertoire.
 
 > sudo chown -R jenkins:jenkins libraries/
@@ -158,6 +162,12 @@ Ajout du driver postgresql pour PHP
 Ajout de XDebug pour avoir le coverage sur les tests unitaires
 
 > sudo apt-get install php5-xdebug
+
+Ajout de GD pour l'export PDF de la fiche de détail
+
+> sudo apt-get install php5-gd
+
+
 
 ### Installation de PostgreSQL
 
