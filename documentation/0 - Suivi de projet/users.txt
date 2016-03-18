@@ -1,0 +1,7 @@
+BPesty = Benoit Pesty <Benoit.Pesty@ign.fr>
+PEGautreau = Paul-Emmanuel Gautreau <Paul-Emmanuel.Gautreau@ign.fr>
+amouget = Anna Mouget <Anna.Mouget@ign.fr>
+bpesty = Benoit Pesty <Benoit.Pesty@ign.fr>
+nviel = Nicolas Viel <Nicolas.Viel@ign.fr>
+pepinsson = Pierre-Emmanuel Pinsson <Pierre-Emmanuel.Pinsson@ign.fr>
+sgalopin = Sylvain Galopin <Sylvain.Galopin@ign.fr>
