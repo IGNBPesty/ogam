@@ -376,7 +376,34 @@ Test : Appeler http://ogam-integration.ign.fr/cgi-bin/mapserv.fcgid?map=/var/www
 
 On doit avoir la carte de l'europe
 
+### Ajout d'un alias Mapserver
 
+Modifier la config apache pour ajouter l'alias
+> sudo nano /etc/apache2/sites-available/ogam.conf
+
+
+    <IfModule mod_alias.c>
+        <IfModule mod_cgi.c>
+                Define ENABLE_USR_LIB_CGI_BIN
+        </IfModule>
+
+        <IfModule mod_cgid.c>
+                Define ENABLE_USR_LIB_CGI_BIN
+        </IfModule>
+
+		<IfDefine ENABLE_USR_LIB_CGI_BIN>
+			ScriptAlias "/mapserv-ogam" "/usr/lib/cgi-bin/mapserv.fcgid"
+			<Location "/mapserv-ogam">
+				SetEnv MS_MAPFILE "/var/www/html/mapserv/ogam.map"
+				SetEnv MS_ERRORFILE "/var/www/html/logs/mapserver_error.log"
+				SetEnv MS_DEBUGLEVEL 5
+			</Location>
+		</IfDefine>
+    </IfModule>
+
+
+Redémarrage de Apache
+> sudo /etc/init.d/apache2 restart
 
 ### Installation de Tilecache
 
