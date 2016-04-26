@@ -278,6 +278,35 @@ Dans /etc/default/jenkins on ajoute
 >-Dhudson.model.DirectoryBrowserSupport.CSP=
 
 
+### Installation de Sencha Cmd
+
+
+On télécharge Sencha Cmd et on le stocke dans un répertoire /home/Sencha
+>sudo  apt-get install  unzip
+>export https_proxy=proxy.ign.fr:3128
+>export http_proxy=proxy.ign.fr:3128
+>sudo mkdir -p /home/Sencha/Cmd/6.0.2.14/
+
+>wget http://cdn.sencha.com/cmd/6.0.2.14/no-jre/SenchaCmd-6.0.2.14-linux-amd64.sh.zip
+>unzip ./SenchaCmd-6.0.2.14-linux-amd64.sh.zip
+
+>sudo ./SenchaCmd-6.0.2.14-linux-amd64.sh -q -dir /home/Sencha/Cmd/6.0.2.14/
+
+>sudo chown -R admin:admin Sencha/
+>sudo chmod -R 774 Sencha/
+
+>sudo echo '-Dhttp.proxyHost=proxy.ign.fr' >> /home/Sencha/Cmd/6.0.2.14/sencha.vmoptions 
+
+Ajout de la commande sencha dans le path utilisateur
+On ajoute les lignes suivantes dans le .profile
+>export PATH="$PATH:/home/Sencha/Cmd"
+
+Puis
+>source .profile
+
+
+Ajout de Jenkins dans le groupe admin
+>sudo usermod -G admin -a jenkins
 
 
 ## Installation d'un site OGAM de démo
