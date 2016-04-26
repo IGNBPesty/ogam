@@ -244,6 +244,37 @@ Mise à jour des droits
 > sudo chmod 775 OGAM_Website/
 
 
+
+### Installation de JSDuck
+
+Pour la génération de la doc javascript
+
+>sudo apt-get update
+>sudo apt-get install -y ruby ruby-dev
+>sudo apt-get install curl
+
+Cf http://stackoverflow.com/questions/29317640/gem-install-rails-fails-on-ubuntu
+>export https_proxy=https://proxy.ign.fr:3128   
+>export http_proxy=http://proxy.ign.fr:3128	
+>gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+>\curl --proxy https://proxy.ign.fr:3128 -sSL https://get.rvm.io | sudo bash -s stable
+
+CURL n'a pas fonctionné avec le proxy de l'IGN, j'ai donc directement téléchargé le contenu de cette adresse [https://raw.githubusercontent.com/wayneeseguin/rvm/master/binscripts/rvm-installer](rvm-installer) dans un fichier texte "rvminstall" que j'ai rendu exécutable.
+>chmod 744 rvminstall
+>./rvminstall
+>source /home/admin/.rvm/scripts/rvm
+>rvm requirements
+
+
+
+>sudo apt-get install -y ruby ruby-dev
+
+>sudo gem install --http-proxy http://proxy.ign.fr:3128/ jsduck
+
+
+
+
+
 ## Installation d'un site OGAM de démo
 
 
