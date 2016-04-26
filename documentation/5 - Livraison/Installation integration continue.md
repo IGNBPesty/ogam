@@ -272,6 +272,11 @@ CURL n'a pas fonctionné avec le proxy de l'IGN, j'ai donc directement télécha
 >sudo gem install --http-proxy http://proxy.ign.fr:3128/ jsduck
 
 
+Modification de la configuration de Jenkins pour désactiver le Sandboxing lors de la publication de HTML
+
+Dans /etc/default/jenkins on ajoute 
+>-Dhudson.model.DirectoryBrowserSupport.CSP=
+
 
 
 
