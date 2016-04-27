@@ -309,6 +309,21 @@ Ajout de Jenkins dans le groupe admin
 >sudo usermod -G admin -a jenkins
 
 
+### Installation des outils de build PHP
+
+Il faut installer Subversion pour Composer
+>sudo apt-get install subversion
+
+Evidemment ça ne fonctionne pas à cause du proxy.
+J'ai tenté plusieurs modifications sans résultat (création d'un .profile pour le compte jenkins, ...)/
+
+Au final la conf dans ce fichier :
+>sudo nano /etc/subversion/servers
+
+
+
+
+
 ## Installation d'un site OGAM de démo
 
 
