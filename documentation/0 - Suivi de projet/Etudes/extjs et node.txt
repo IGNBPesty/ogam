@@ -1,0 +1,6 @@
+google: extjs 5 node.js
+http://www.sencha.com/blog/writing-an-extdirect-backend-in-node-js/ : extdirect
+https://www.npmjs.org/package/extdirect : exemple extdirect
+http://code-weblog.com/realiser-une-appli-web-ria-avec-extjs-et-node-js/ : tuto avec express
+https://nodejsmodules.org/tags/extjs : modules
+http://stackoverflow.com/questions/10424887/extjs-with-node-js-backend : SilkJS

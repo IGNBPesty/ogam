@@ -1,0 +1,3 @@
+FK de Create_metadata_schema.sql à Import_from_csv.sql:
+Recherche: (.*)\r\n  ADD CONSTRAINT (.*) \r\n    FOREIGN KEY .*\r\n      REFERENCES [^;]*;\r\n
+Remplacer par: $1 DROP CONSTRAINT $2;
