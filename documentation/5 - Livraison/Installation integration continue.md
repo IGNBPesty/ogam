@@ -244,6 +244,86 @@ Mise à jour des droits
 > sudo chmod 775 OGAM_Website/
 
 
+
+### Installation de JSDuck
+
+Pour la génération de la doc javascript
+
+>sudo apt-get update
+>sudo apt-get install -y ruby ruby-dev
+>sudo apt-get install curl
+
+Cf http://stackoverflow.com/questions/29317640/gem-install-rails-fails-on-ubuntu
+>export https_proxy=https://proxy.ign.fr:3128   
+>export http_proxy=http://proxy.ign.fr:3128	
+>gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+>\curl --proxy https://proxy.ign.fr:3128 -sSL https://get.rvm.io | sudo bash -s stable
+
+CURL n'a pas fonctionné avec le proxy de l'IGN, j'ai donc directement téléchargé le contenu de cette adresse [https://raw.githubusercontent.com/wayneeseguin/rvm/master/binscripts/rvm-installer](rvm-installer) dans un fichier texte "rvminstall" que j'ai rendu exécutable.
+>chmod 744 rvminstall
+>./rvminstall
+>source /home/admin/.rvm/scripts/rvm
+>rvm requirements
+
+
+
+>sudo apt-get install -y ruby ruby-dev
+
+>sudo gem install --http-proxy http://proxy.ign.fr:3128/ jsduck
+
+
+Modification de la configuration de Jenkins pour désactiver le Sandboxing lors de la publication de HTML
+
+Dans /etc/default/jenkins on ajoute 
+>-Dhudson.model.DirectoryBrowserSupport.CSP=
+
+
+### Installation de Sencha Cmd
+
+
+On télécharge Sencha Cmd et on le stocke dans un répertoire /home/Sencha
+>sudo  apt-get install  unzip
+>export https_proxy=proxy.ign.fr:3128
+>export http_proxy=proxy.ign.fr:3128
+>sudo mkdir -p /home/Sencha/Cmd/6.0.2.14/
+
+>wget http://cdn.sencha.com/cmd/6.0.2.14/no-jre/SenchaCmd-6.0.2.14-linux-amd64.sh.zip
+>unzip ./SenchaCmd-6.0.2.14-linux-amd64.sh.zip
+
+>sudo ./SenchaCmd-6.0.2.14-linux-amd64.sh -q -dir /home/Sencha/Cmd/6.0.2.14/
+
+>sudo chown -R admin:admin Sencha/
+>sudo chmod -R 774 Sencha/
+
+>sudo echo '-Dhttp.proxyHost=proxy.ign.fr' >> /home/Sencha/Cmd/6.0.2.14/sencha.vmoptions 
+
+Ajout de la commande sencha dans le path utilisateur
+On ajoute les lignes suivantes dans le .profile
+>export PATH="$PATH:/home/Sencha/Cmd"
+
+Puis
+>source .profile
+
+
+Ajout de Jenkins dans le groupe admin
+>sudo usermod -G admin -a jenkins
+
+
+### Installation des outils de build PHP
+
+Il faut installer Subversion pour Composer
+>sudo apt-get install subversion
+
+Evidemment ça ne fonctionne pas à cause du proxy.
+J'ai tenté plusieurs modifications sans résultat (création d'un .profile pour le compte jenkins, ...)/
+
+Au final la conf dans ce fichier :
+>sudo nano /etc/subversion/servers
+
+
+
+
+
 ## Installation d'un site OGAM de démo
 
 
@@ -376,7 +456,34 @@ Test : Appeler http://ogam-integration.ign.fr/cgi-bin/mapserv.fcgid?map=/var/www
 
 On doit avoir la carte de l'europe
 
+### Ajout d'un alias Mapserver
 
+Modifier la config apache pour ajouter l'alias
+> sudo nano /etc/apache2/sites-available/ogam.conf
+
+
+    <IfModule mod_alias.c>
+        <IfModule mod_cgi.c>
+                Define ENABLE_USR_LIB_CGI_BIN
+        </IfModule>
+
+        <IfModule mod_cgid.c>
+                Define ENABLE_USR_LIB_CGI_BIN
+        </IfModule>
+
+		<IfDefine ENABLE_USR_LIB_CGI_BIN>
+			ScriptAlias "/mapserv-ogam" "/usr/lib/cgi-bin/mapserv.fcgid"
+			<Location "/mapserv-ogam">
+				SetEnv MS_MAPFILE "/var/www/html/mapserv/ogam.map"
+				SetEnv MS_ERRORFILE "/var/www/html/logs/mapserver_error.log"
+				SetEnv MS_DEBUGLEVEL 5
+			</Location>
+		</IfDefine>
+    </IfModule>
+
+
+Redémarrage de Apache
+> sudo /etc/init.d/apache2 restart
 
 ### Installation de Tilecache
 
