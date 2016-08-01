@@ -31,6 +31,7 @@ Dans /etc/environment mettre :
 > HTTP_PROXY="http://proxy.ign.fr:3128/";	
 > HTTPS_PROXY="https://proxy.ign.fr:3128/";		
 > FTP_PROXY="http://proxy.ign.fr:3128/";	
+> no_proxy="127.0.0.1, localhost"
 
 Ajout du paquet jenkins à apt-get
 
