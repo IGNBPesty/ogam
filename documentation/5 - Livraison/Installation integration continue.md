@@ -168,6 +168,8 @@ Ajout de GD pour l'export PDF de la fiche de détail
 
 > sudo apt-get install php5-gd
 
+Ajout de APC Cache
+> sudo apt-get install php-apc
 
 
 ### Installation de PostgreSQL
