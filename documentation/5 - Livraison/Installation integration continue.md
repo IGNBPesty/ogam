@@ -59,6 +59,11 @@ JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT --ajp13Port=$
 L'URL devient 
 http://ogam-integration.ign.fr:8081/jenkins/
 
+Modifier le umasks :
+
+UMASK=002
+
+
 
 
 ### Installation de ANT
