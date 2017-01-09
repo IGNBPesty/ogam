@@ -401,6 +401,13 @@ La connexion avec l'utilisateur admin / admin doit fonctionner
 Cliquer sur le menu "Vérifier la configuration", tout doit être OK
 
 
+Mise à jour des droits pour Jenkins et Apache
+> sudo setfacl -R -m u:www-data:rwX server/
+> sudo setfacl -R -m u:www-data:rwX public/
+> sudo setfacl -R -m u:jenkins:rwX server/
+> sudo setfacl -R -m u:jenkins:rwX public/
+
+
 ### Installation de Tomcat
 
 > sudo apt-get install tomcat7 tomcat7-admin
