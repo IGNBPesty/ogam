@@ -56,3 +56,25 @@ Note: Pour ajouter la couverture, retirer l'option '--no-coverage' (Attention ce
 
 vagrant@ogam:/vagrant/ogam/website/htdocs/client$ gradle jsduck
 
+## 4. Divers
+
+### 4.1 Gradle
+
+#### 4.1.1 Voir toutes les tâches gradle disponibles depuis la racine du projet
+
+vagrant@ogam:/vagrant/ogam$ gradle tasks
+
+#### 4.1.2 Trouver toutes les sous-tâches gradle disponibles dans le projet
+
+vagrant@ogam:/vagrant/ogam/database$ locate build.gradle
+/vagrant/ogam/build.gradle
+/vagrant/ogam/database/build.gradle
+/vagrant/ogam/service_common/build.gradle
+/vagrant/ogam/service_generation_rapport/build.gradle
+/vagrant/ogam/service_harmonization/build.gradle
+/vagrant/ogam/service_integration/build.gradle
+/vagrant/ogam/website/htdocs/client/build.gradle
+/vagrant/ogam/website/htdocs/server/build.gradle
+
+Se placer dans un répertoire contenant un fichier 'build.gradle' et lancer la commande 'gradle tasks'.
+Exemple: vagrant@ogam:/vagrant/ogam/website/htdocs/client$ gradle tasks
