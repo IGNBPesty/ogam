@@ -48,8 +48,8 @@ Lancer successivement les commandes suivantes :
 
 **Note**: Dans le cas de l'erreur '...Please verify that these guest additions are properly installed in the guest...', il y a deux solutions:
 
-	- Installer le plugin VirtualBox 'guest additions',
-	- Changer dans le fichier vagrantfile le nom de la box de "debian/jessie64" pour "debian/contrib-jessie64" (box avec vbguest déjà installé)
+- Installer le plugin VirtualBox 'guest additions',
+- Changer dans le fichier vagrantfile le nom de la box de "debian/jessie64" pour "debian/contrib-jessie64" (box avec vbguest déjà installé)
 
 ### 3.2 Lancer un test unitaire rapide (sans couverture) sur un contrôleur
 
@@ -75,21 +75,20 @@ vagrant@ogam:/vagrant/ogam$ gradle tasks
 
 vagrant@ogam:/vagrant/ogam/database$ locate build.gradle
 
-/vagrant/ogam/build.gradle
+	/vagrant/ogam/build.gradle
+	/vagrant/ogam/database/build.gradle
 
-/vagrant/ogam/database/build.gradle
+	/vagrant/ogam/service_common/build.gradle
 
-/vagrant/ogam/service_common/build.gradle
+	/vagrant/ogam/service_generation_rapport/build.gradle
 
-/vagrant/ogam/service_generation_rapport/build.gradle
+	/vagrant/ogam/service_harmonization/build.gradle
 
-/vagrant/ogam/service_harmonization/build.gradle
+	/vagrant/ogam/service_integration/build.gradle
 
-/vagrant/ogam/service_integration/build.gradle
+	/vagrant/ogam/website/htdocs/client/build.gradle
 
-/vagrant/ogam/website/htdocs/client/build.gradle
-
-/vagrant/ogam/website/htdocs/server/build.gradle
+	/vagrant/ogam/website/htdocs/server/build.gradle
 
 Se placer dans un répertoire contenant un fichier 'build.gradle' et lancer la commande 'gradle tasks'.
 
@@ -97,11 +96,11 @@ Exemple: vagrant@ogam:/vagrant/ogam/website/htdocs/client$ gradle tasks
 
 #### 4.1.2 Les sous-tâches gradle utilisées dans le répertoire client
 
-sencha_*: Importation des tâches de sencha Cmd
+**sencha_***: Importation des tâches de sencha Cmd
 
-jsduck: Lance la génération de la doc javascript et stocke le résultat dans './build/docs/'
+**jsduck**: Lance la génération de la doc javascript et stocke le résultat dans './build/docs/'
 
-deploy: Copie les fichiers javascript dans le répertoire de déploiement:
+**deploy**: Copie les fichiers javascript dans le répertoire de déploiement:
 - './build/deploy/public/', sur la VM de développement.
 - '/var/www/html/public/', sur le serveur d'intégration continue.
 
