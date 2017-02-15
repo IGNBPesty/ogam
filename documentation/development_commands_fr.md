@@ -20,13 +20,13 @@ vagrant@ogam:/vagrant/ogam/website/htdocs/server/ogamServer$ php composer.phar i
 
 vagrant@ogam:/vagrant/ogam/website/htdocs/client/ogamDesktop$ sencha app build -c -e development
 
-Note: La commande est très lente dans la vm. Pour accélérer les performances lancer la commande directement dans Git Bash (Nécessite d'installer Sencha Cmd sur votre poste de travail).
+**Note**: La commande est très lente dans la vm. Pour accélérer les performances lancer la commande directement dans Git Bash (Nécessite d'installer Sencha Cmd sur votre poste de travail).
 
 #### 2.1.2. Builder OgamDesktop pour la production
 
 vagrant@ogam:/vagrant/ogam/website/htdocs/client/ogamDesktop$ sencha app build -c -e production
 
-Note: La commande est très lente dans la vm. Pour accélérer les performances lancer la commande directement dans Git Bash (Nécessite d'installer Sencha Cmd sur votre poste de travail).
+**Note**: La commande est très lente dans la vm. Pour accélérer les performances lancer la commande directement dans Git Bash (Nécessite d'installer Sencha Cmd sur votre poste de travail).
 
 ## 3. Qualité
 
@@ -36,7 +36,7 @@ Ouvrir un Git Bash et se placer à la racine du projet (Répertoire contenant le
 
 Lancer successivement les commandes suivantes :
 - vagrant halt -f
-- vagrant destroy
+- vagrant destroy 
 - git fetch origin
 - git checkout Release_Vx.x.x
 - git pull
@@ -44,11 +44,17 @@ Lancer successivement les commandes suivantes :
 - git clean -fxd
 - vagrant up
 
+**Note**: Dans le cas de l'erreur 'Timed out while waiting for the machine to boot...' au niveau de l'authentification ssh, il faut arrêter la vm et la supprimer via virtualbox... Et ensuite relancer un 'vagrant up'.
+
+**Note**: Dans le cas de l'erreur '...Please verify that these guest additions are properly installed in the guest...', il y a deux solutions:
+	- Installer le plugin VirtualBox 'guest additions',
+	- Changer dans le fichier vagrantfile le nom de la box de "debian/jessie64" pour "debian/contrib-jessie64" (box avec vbguest déjà installé)
+
 ### 3.2 Lancer un test unitaire rapide (sans couverture) sur un contrôleur
 
 vagrant@ogam:/vagrant/ogam/website/htdocs/server/ogamServer$ ./vendor/phpunit/phpunit/phpunit --no-coverage --configuration ./phpunit.xml ./src/Ign/Bundle/OGAMBundle/Tests/Controller/QueryControllerTest.php
 
-Note: Pour ajouter la couverture, retirer l'option '--no-coverage' (Attention cela nuit gravement aux performances). Les résultats de couverture sont consultables via la page web "OGAM/website/htdocs/server/build/test-results/phpunit/coverage/index.html"
+**Note**: Pour ajouter la couverture, retirer l'option '--no-coverage' (Attention cela nuit gravement aux performances). Les résultats de couverture sont consultables via la page web "OGAM/website/htdocs/server/build/test-results/phpunit/coverage/index.html"
 
 ### 3.3 Générer la documentation
 
@@ -78,3 +84,16 @@ vagrant@ogam:/vagrant/ogam/database$ locate build.gradle
 
 Se placer dans un répertoire contenant un fichier 'build.gradle' et lancer la commande 'gradle tasks'.
 Exemple: vagrant@ogam:/vagrant/ogam/website/htdocs/client$ gradle tasks
+
+#### 4.1.2 Les sous-tâches gradle utilisées dans le répertoire client
+
+sencha_*: Importation des tâches de sencha Cmd
+jsduck: Lance la génération de la doc javascript et stocke le résultat dans './build/docs/'
+deploy: Copie les fichiers javascript dans le répertoire de déploiement:
+- './build/deploy/public/', sur la VM de développement.
+- '/var/www/html/public/', sur le serveur d'intégration continue.
+
+
+### 4.1 Vagrant
+
+...
