@@ -98,6 +98,38 @@ Exemple: vagrant@ogam:/vagrant/ogam/website/htdocs/client$ **gradle tasks**
 - './build/deploy/public/', sur la VM de développement.
 - '/var/www/html/public/', sur le serveur d'intégration continue.
 
-### 4.1 Vagrant
+### 4.2 Vagrant
 
-...
+Plusieurs provisions ont été créées pour automatiser certaines tâches. Il est possible de lancer les provisions avec une commande du type: (commande à lancer depuis la racine du projet)
+$ vagrant provision --provision-with 'nom_de_la_provision'
+
+#### 4.2.1 Middleware installation:
+
+- **bootstrap**: Configuration du proxy, et mise à jour des packages debian,
+- **install_java_tomcat**: Installation de tomcat,
+- **install_apache**: Installation d'apache et de php,
+- **install_mapserv**: Installation mapserver,
+- **install_tilecache**: Installation de tilecache,
+- **install_postgres**: Installation de postgres et postgis,
+- **install_db**: Installation de la base de données,
+- **install_sencha_cmd_6**: Installation de Sencha Cmd,
+- **install_dev_tools**: Installation de Ruby, JsDuck, Subversion (Nécessaire pour checkstyle),
+- **fix_var_perf**: Amélioration des performances en limitant la synchronisation des répertoires de caches.
+
+#### 4.2.2 Application deployment
+
+- **install_gradle**: Installation de gradle
+- **install_composer_libraries**: Installation des librairies Composer,
+- **move_vendor_dir**: Déplace le répertoire vendor afin de pouvoir le partager,
+- **fix_vendor_perf**: Amélioration des performances en limitant la synchronisation du répertoire vendor,
+- **build_ogam_services**: Construit les services et les déploie,
+- **build_ogam_desktop**: Construit OgamDesktop (Partie cliente du projet),
+- **build_ogam_server**: Construit OgamServer (Partie serveur du projet).
+
+#### 4.2.3 Documentation & Code quality & Developers provisions
+
+- **run_phpdoc**: Lance la construction de la documentation PHP,
+- **run_jsdoc**: Lance la construction de la documentation Javascript,
+- **run_phpunit**: Lance les tests unitaires PHP, 
+- **run_phpcheckstyle**: Lance les tests de formatage du code PHP,
+- **update_metadata**: Met à jour les métadonnées chargées dans la base de données.
