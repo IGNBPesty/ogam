@@ -1,34 +1,48 @@
 # Commandes usuelles utilisées pour le développement
 
-## 1. Côté serveur
+## 1 Côté serveur
 
-### 1.1. Symfony
+### 1.1 Symfony
 
-#### 1.1.1. Recharger les images et les css du bundle ogam
+#### 1.1.1 La console de Symfony
+
+La console est un petit utilitaire fourni avec Symfony pour effectuer plusieurs tâches. L'ensemble des tâches disponibles peuvent être visualisées grâce à la commande:
+
+vagrant@ogam:/vagrant/ogam/website/htdocs/server/ogamServer$ **php app/console**
+
+#### 1.1.1.1 Recharger les images et les css du bundle ogam
 
 vagrant@ogam:/vagrant/ogam/website/htdocs/server/ogamServer$ **php app/console assets:install && php app/console assetic:dump**
 
-#### 1.1.2. Générer les fichiers d'autoload optimisés (Pour améliorer les performances)
+#### 1.1.1.2 Cache warmup
+
+#### 1.1.1.3 Cache clean
+
+#### 1.1.1.4 Doctrine mapping
+
+#### 1.1.2 Composer
+
+#### 1.1.2.1 Générer les fichiers d'autoload optimisés (Pour améliorer les performances)
 
 vagrant@ogam:/vagrant/ogam/website/htdocs/server/ogamServer$ **php composer.phar install -o**
 
-## 2. Côté client
+## 2 Côté client
 
-### 2.1. Extjs
+### 2.1 Extjs
 
-#### 2.1.1. Builder OgamDesktop pour le développement
+#### 2.1.1 Builder OgamDesktop pour le développement
 
 vagrant@ogam:/vagrant/ogam/website/htdocs/client/ogamDesktop$ **sencha app build -c -e development**
 
 **Note**: La commande est très lente dans la vm. Pour accélérer les performances lancer la commande directement dans Git Bash (Nécessite d'installer Sencha Cmd sur votre poste de travail).
 
-#### 2.1.2. Builder OgamDesktop pour la production
+#### 2.1.2 Builder OgamDesktop pour la production
 
 vagrant@ogam:/vagrant/ogam/website/htdocs/client/ogamDesktop$ **sencha app build -c -e production**
 
 **Note**: La commande est très lente dans la vm. Pour accélérer les performances lancer la commande directement dans Git Bash (Nécessite d'installer Sencha Cmd sur votre poste de travail).
 
-## 3. Qualité
+## 3 Qualité
 
 ### 3.1 Procédure à suivre sur son poste de travail pour réaliser une recette
 
@@ -63,15 +77,62 @@ vagrant@ogam:/vagrant/ogam/website/htdocs/server/ogamServer$ **./vendor/phpunit/
 
 vagrant@ogam:/vagrant/ogam/website/htdocs/client$ **gradle jsduck**
 
-## 4. Divers
+## 4 Divers
 
-### 4.1 Gradle
+### 4.1 Vagrant
 
-#### 4.1.1 Voir toutes les tâches gradle disponibles depuis la racine du projet
+Plusieurs provisions ont été créées pour automatiser certaines tâches. Il est possible de lancer les provisions avec une commande du type (commande à lancer depuis la racine du projet):
+
+**vagrant provision --provision-with 'nom_de_la_provision'**
+
+**Note**: Les provisions en italic sont des provisions qui servent à construire la vm en environnement de développement. Les provisions en gras sont les provisions qui peuvent servir durant le développement.
+
+#### 4.1.1 Installation Middleware
+
+- *bootstrap*: Configuration du proxy, et mise à jour des packages debian,
+- *install_java_tomcat*: Installation de tomcat,
+- *install_apache*: Installation d'apache et de php,
+- *install_mapserv*: Installation mapserver,
+- *install_tilecache*: Installation de tilecache,
+- *install_postgres*: Installation de postgres et postgis,
+- *install_sencha_cmd_6*: Installation de Sencha Cmd,
+- *install_dev_tools*: Installation de Ruby, JsDuck, Subversion (Nécessaire pour checkstyle),
+- *fix_var_perf*: Amélioration des performances en limitant la synchronisation des répertoires de caches.
+
+#### 4.1.2 Déploiement de l'application
+
+- *install_gradle*: Installation de gradle,
+- *install_composer_libraries*: Installation des librairies Composer,
+- *move_vendor_dir*: Déplace le répertoire vendor afin de pouvoir le partager,
+- *fix_vendor_perf*: Amélioration des performances en limitant la synchronisation du répertoire vendor,
+- **install_db**: Installation de la base de données,
+- **build_ogam_services**: Construit les services et les déploie,
+- **build_ogam_desktop**: Construit OgamDesktop (Partie cliente du projet),
+- **build_ogam_server**: Construit OgamServer (Partie serveur du projet).
+
+#### 4.1.3 Documentation
+
+- **run_phpdoc**: Lance la construction de la documentation PHP,
+- **run_jsdoc**: Lance la construction de la documentation Javascript.
+
+#### 4.1.4 Qualité du code
+
+- **run_phpunit**: Lance les tests unitaires PHP, 
+- **run_phpcheckstyle**: Lance les tests de formatage du code PHP.
+
+#### 4.1.5 Développement
+
+- **update_metadata**: Met à jour les métadonnées chargées dans la base de données.
+
+### 4.2 Gradle
+
+Les tâches gradle ont été créées pour servir de support aux provisions vagrant et à Jenkins pour l'intégration continue. Elles ne sont donc pas vouées à être utilisées directement en ligne de commande. Toutefois, pour les besoins du développement, il peut être pratique de les utiliser pour lancer uniquement certaines tâches gradle bien identifiées plutôt qu'un ensemble de tâches via vagrant.
+
+#### 4.2.1 Voir toutes les tâches gradle disponibles depuis la racine du projet
 
 vagrant@ogam:/vagrant/ogam$ **gradle tasks**
 
-#### 4.1.2 Trouver toutes les sous-tâches gradle disponibles dans le projet
+#### 4.2.2 Trouver toutes les sous-tâches gradle disponibles dans le projet
 
 vagrant@ogam:/vagrant/ogam/database$ **locate build.gradle**
 
@@ -88,7 +149,7 @@ Se placer dans un répertoire contenant un fichier 'build.gradle' et lancer la c
 
 Exemple: vagrant@ogam:/vagrant/ogam/website/htdocs/client$ **gradle tasks**
 
-#### 4.1.2 Les sous-tâches gradle utilisées dans le répertoire client
+#### 4.2.2 Les sous-tâches gradle utilisées dans le répertoire '**client**'
 
 **sencha_***: Importation des tâches de sencha Cmd
 
@@ -98,38 +159,16 @@ Exemple: vagrant@ogam:/vagrant/ogam/website/htdocs/client$ **gradle tasks**
 - './build/deploy/public/', sur la VM de développement.
 - '/var/www/html/public/', sur le serveur d'intégration continue.
 
-### 4.2 Vagrant
+#### 4.2.3 Les sous-tâches gradle utilisées dans le répertoire '**server**'
 
-Plusieurs provisions ont été créées pour automatiser certaines tâches. Il est possible de lancer les provisions avec une commande du type: (commande à lancer depuis la racine du projet)
-$ vagrant provision --provision-with 'nom_de_la_provision'
+#### 4.2.4 Les sous-tâches gradle utilisées dans le répertoire '**server**'
 
-#### 4.2.1 Middleware installation:
+#### 4.2.5 Les sous-tâches gradle utilisées dans le répertoire '**database**'
 
-- **bootstrap**: Configuration du proxy, et mise à jour des packages debian,
-- **install_java_tomcat**: Installation de tomcat,
-- **install_apache**: Installation d'apache et de php,
-- **install_mapserv**: Installation mapserver,
-- **install_tilecache**: Installation de tilecache,
-- **install_postgres**: Installation de postgres et postgis,
-- **install_db**: Installation de la base de données,
-- **install_sencha_cmd_6**: Installation de Sencha Cmd,
-- **install_dev_tools**: Installation de Ruby, JsDuck, Subversion (Nécessaire pour checkstyle),
-- **fix_var_perf**: Amélioration des performances en limitant la synchronisation des répertoires de caches.
+#### 4.2.6 Les sous-tâches gradle utilisées dans le répertoire '**service_common**'
 
-#### 4.2.2 Application deployment
+#### 4.2.7 Les sous-tâches gradle utilisées dans le répertoire '**service_generation_rapport**'
 
-- **install_gradle**: Installation de gradle
-- **install_composer_libraries**: Installation des librairies Composer,
-- **move_vendor_dir**: Déplace le répertoire vendor afin de pouvoir le partager,
-- **fix_vendor_perf**: Amélioration des performances en limitant la synchronisation du répertoire vendor,
-- **build_ogam_services**: Construit les services et les déploie,
-- **build_ogam_desktop**: Construit OgamDesktop (Partie cliente du projet),
-- **build_ogam_server**: Construit OgamServer (Partie serveur du projet).
+#### 4.2.8 Les sous-tâches gradle utilisées dans le répertoire '**service_harmonization**'
 
-#### 4.2.3 Documentation & Code quality & Developers provisions
-
-- **run_phpdoc**: Lance la construction de la documentation PHP,
-- **run_jsdoc**: Lance la construction de la documentation Javascript,
-- **run_phpunit**: Lance les tests unitaires PHP, 
-- **run_phpcheckstyle**: Lance les tests de formatage du code PHP,
-- **update_metadata**: Met à jour les métadonnées chargées dans la base de données.
+#### 4.2.9 Les sous-tâches gradle utilisées dans le répertoire '**service_integration**'
