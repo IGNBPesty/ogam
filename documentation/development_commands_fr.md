@@ -14,17 +14,32 @@ vagrant@ogam:/vagrant/ogam/website/htdocs/server/ogamServer$ **php app/console**
 
 vagrant@ogam:/vagrant/ogam/website/htdocs/server/ogamServer$ **php app/console assets:install && php app/console assetic:dump**
 
-#### 1.1.1.2 Cache warmup
+#### 1.1.1.2 Création du cache
 
-#### 1.1.1.3 Cache clean
+vagrant@ogam:/vagrant/ogam/website/htdocs/server/ogamServer$ **php app/console cache:warmup**
 
-#### 1.1.1.4 Doctrine mapping
+#### 1.1.1.3 Suppression du cache
+
+vagrant@ogam:/vagrant/ogam/website/htdocs/server/ogamServer$ **php app/console cache:clear**
+
+#### 1.1.1.4 Vérifier que le mapping de doctrine est correct
+
+vagrant@ogam:/vagrant/ogam/website/htdocs/server/ogamServer$ **php app/console doctrine:mapping:info**
 
 #### 1.1.2 Composer
 
 #### 1.1.2.1 Générer les fichiers d'autoload optimisés (Pour améliorer les performances)
 
 vagrant@ogam:/vagrant/ogam/website/htdocs/server/ogamServer$ **php composer.phar install -o**
+
+#### 1.1.3 Passer en mode 'production'
+
+- Ouvrir le fichier de conf apache './vagrant_config/conf/apache/httpd_ogam.conf',
+- Remplacer le fichier 'app_dev.php' par le fichier 'app.php' à la ligne 66 et à la ligne 91,
+- Relancer apache avec la commande: 'vagrant@ogam:/vagrant/ogam$ **sudo service apache2 restart**',
+- Nettoyer le cache et le recréer.
+
+**Note:** Le fichier 'httpd_ogam.conf' étant lié et non recopié dans la vm, il n'est pas nécessaire de le recopier à nouveau (voir ligne 97 du fichier './vagrant_config/scripts/install_apache.sh').
 
 ## 2 Côté client
 
