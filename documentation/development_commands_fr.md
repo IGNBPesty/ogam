@@ -164,26 +164,75 @@ Se placer dans un répertoire contenant un fichier 'build.gradle' et lancer la c
 
 Exemple: vagrant@ogam:/vagrant/ogam/website/htdocs/client$ **gradle tasks**
 
-#### 4.2.2 Les sous-tâches gradle utilisées dans le répertoire '**client**'
+#### 4.2.3 Les tâches gradle déclarées dans le répertoire '**root**'
 
-**sencha_***: Importation des tâches de sencha Cmd
+Aucunes tâches n'est déclarées dans le fichier de build, mais on peut y trouver de la configuration pour les sous-tâches.
 
-**jsduck**: Lance la génération de la doc javascript et stocke le résultat dans './build/docs/'
+#### 4.2.4 Les sous-tâches gradle déclarées dans le répertoire '**client**'
+
+**sencha_***: Importation des tâches de sencha Cmd.
+
+**jsduck**: Lance la génération de la doc javascript et stocke le résultat dans './build/docs/'.
 
 **deploy**: Copie les fichiers javascript dans le répertoire de déploiement:
 - './build/deploy/public/', sur la VM de développement.
 - '/var/www/html/public/', sur le serveur d'intégration continue.
 
-#### 4.2.3 Les sous-tâches gradle utilisées dans le répertoire '**server**'
+#### 4.2.5 Les sous-tâches gradle déclarées dans le répertoire '**server**'
 
-#### 4.2.4 Les sous-tâches gradle utilisées dans le répertoire '**server**'
+**installComposer**: Télécharge et installe Composer.
 
-#### 4.2.5 Les sous-tâches gradle utilisées dans le répertoire '**database**'
+**installLibraries**: Télécharge et installe les librairies nécessaires au projet via Composer.
 
-#### 4.2.6 Les sous-tâches gradle utilisées dans le répertoire '**service_common**'
+**phpdoc**: Lance la génération de la documentation php via PHPDoc.
 
-#### 4.2.7 Les sous-tâches gradle utilisées dans le répertoire '**service_generation_rapport**'
+**phpcheckstyle**: Lance les analyses statistiques via PHPCheckstyle.
 
-#### 4.2.8 Les sous-tâches gradle utilisées dans le répertoire '**service_harmonization**'
+**phpunit**: Lance les tests unitaires via PHPUnit.
 
-#### 4.2.9 Les sous-tâches gradle utilisées dans le répertoire '**service_integration**'
+**cleanDeploy**: Nettoie de dossier de déploiement.
+
+**deploy**: Copie les fichiers PHP dans le répertoire de déploiement.
+
+**setBuildNumber**: Met à jour le numéro de déploiement.
+
+**clearCache**: Supprime le cache de symfony.
+
+**installAssets**: Installe les assets (images, css...).
+
+**asseticDump**: Recopie les assets (images, css...).
+
+**buildAll**: Construit l'application (clearCache, asseticDump, installAssets).
+
+#### 4.2.6 Les sous-tâches gradle déclarées dans le répertoire '**database**'
+
+Aucunes tâches n'est déclarées dans le fichier de build. Toutefois les tâches de **Liquibase** sont importées.
+
+#### 4.2.7 Les sous-tâches gradle déclarées dans le répertoire '**service_common**'
+
+Aucunes tâches n'est déclarées dans le fichier de build, mais on peut y trouver de la configuration pour les sous-tâches (checkstyle).
+
+#### 4.2.8 Les sous-tâches gradle déclarées dans le répertoire '**service_generation_rapport**'
+
+**cargo***: Importation des tâches de déploiement de Cargo
+
+**addReports**: Ajoute les rapports à l'archive war.
+
+**deploy**: Déploie l'archive war dans le Tomcat local.
+
+#### 4.2.9 Les sous-tâches gradle déclarées dans le répertoire '**service_harmonization**'
+
+**cargo***: Importation des tâches de déploiement de Cargo
+
+**deployConfig**: Copie les fichiers de configuration dans le Tomcat local.
+
+**deploy**: Déploie l'archive war dans le Tomcat local.
+
+#### 4.2.10 Les sous-tâches gradle déclarées dans le répertoire '**service_integration**'
+
+**cargo***: Importation des tâches de déploiement de Cargo
+
+**deployConfig**: Copie les fichiers de configuration dans le Tomcat local.
+
+**deploy**: Déploie l'archive war dans le Tomcat local.
+
