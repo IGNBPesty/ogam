@@ -37,7 +37,8 @@ vagrant@ogam:/vagrant/ogam/website/htdocs/server/ogamServer$ **php composer.phar
 - Ouvrir le fichier de conf apache './vagrant_config/conf/apache/httpd_ogam.conf',
 - Remplacer le fichier 'app_dev.php' par le fichier 'app.php' à la ligne 66 et à la ligne 91,
 - Relancer apache avec la commande: 'vagrant@ogam:/vagrant/ogam$ **sudo service apache2 restart**',
-- Nettoyer le cache et le recréer.
+- Nettoyer le cache et le recréer,
+- Builder OgamDesktop pour la production (Cf 2.1.2).
 
 **Note:** Le fichier 'httpd_ogam.conf' étant lié et non recopié dans la vm, il n'est pas nécessaire de le recopier à nouveau (voir ligne 97 du fichier './vagrant_config/scripts/install_apache.sh').
 
