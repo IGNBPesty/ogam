@@ -52,7 +52,11 @@ Il y a trois proxys différents dans OGAM:
 
 ##### 1.1.4.1 Débuguer une image vide via le proxy mapserver
 
-##### 1.1.4.1.1 Solution 1 : via le navigateur
+##### 1.1.4.1.1 Solution 1 : via les logs de mapserver
+
+vagrant@ogam:/vagrant/ogam/website/htdocs/logs$ **tail -n 100 mapserver_ogam.log**
+
+##### 1.1.4.1.2 Solution 2 : via le navigateur
 
 - Dans le fichier 'http_ogam.conf' mettre en commentaire les sept premières lignes pour autoriser l'accés à mapserver depuis le poste de développment:
 
@@ -72,10 +76,6 @@ Il y a trois proxys différents dans OGAM:
 - Relancer la requête qui renvoie une image vide,
 - Copier-coller l'url générée dans un nouvel onglet du navigateur, remplacer 'localhost' par l'IP de la VM (par défaut: 192.168.50.4) et supprimer le paramètre 'EXCEPTIONS=BLANK' de l'url.
 - Ouvrir le fichier 'mapserv-ogam' téléchargé par le navigateur avec un editeur de text et consulter les logs d'erreur.
-
-##### 1.1.4.1.2 Solution 2 : via les logs de mapserver
-
-vagrant@ogam:/vagrant/ogam/website/htdocs/logs$ **tail -n 100 mapserver_ogam.log**
 
 ## 2 Côté client
 
