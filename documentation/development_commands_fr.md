@@ -126,12 +126,12 @@ Lancer successivement les commandes suivantes :
 - Installer le plugin VirtualBox 'guest additions',
 - Changer dans le fichier vagrantfile le nom de la box de "debian/jessie64" pour "debian/contrib-jessie64" (box avec vbguest déjà installé)
 
-#### 3.1.3 Cahier de test et corrections
+#### 3.1.3 Cahier de tests et corrections
 
 - Copier le dernier fichier de recette: OGAM\documentation\4 - Intégration et recette\Dossier de tests Vx.x.x.doc,
 - Créer un nouveau fichier de recette en respectant la convention de nommage,
 - Lorqu'un nouveau bug est trouvé:
-	- Créer un ticket dans JIRA en indiquant la page et numéro de ligne du test dans les commentaires,
+	- Créer un ticket dans JIRA en indiquant la page et le numéro de ligne du test dans les commentaires,
 	- Reporter le numéro de bug et le libellé dans le dossier de tests,
 	- Corriger le bug et le commiter sur la branche de recette.
 - Une fois les tests finis commiter le dossier de tests.
@@ -142,23 +142,32 @@ Une fois tous les bugs corrigés et que l'application est jugée suffisamment st
 
 #### 3.1.4.1 Merge sur master
 
+Jouer les lignes de commande suivantes:
+
 - git fetch origin
 - git checkout Release_Vx.x.x
 - git pull
 - git checkout master
 - git pull
-- git merge --no-ff Release_Vx.x.x
-- git push origin master
+- git merge --no-ff -m "Merge version x.x.x" Release_Vx.x.x
+- git tag -a vx.x.x -m "Version x.x.x" HEAD
+- git push --tags origin master
+
+Vérifier que tout est bien passé sur [gitlab](http://gitlab.dockerforge.ign.fr/ogam/ogam/network/master).
 
 #### 3.1.4.2 Merge sur develop
 
+Jouer les lignes de commande suivantes:
+
 - git fetch origin
 - git checkout Release_Vx.x.x
 - git pull
-- git checkout master
+- git checkout develop
 - git pull
-- git merge --no-ff Release_Vx.x.x
-- git push origin master
+- git merge --no-ff -m "Merge version x.x.x" Release_Vx.x.x
+- git push origin develop
+
+Vérifier que tout est bien passé sur [gitlab](http://gitlab.dockerforge.ign.fr/ogam/ogam/network/develop).
 
 ### 3.2 Lancer un test unitaire rapide (sans couverture) sur un contrôleur
 
