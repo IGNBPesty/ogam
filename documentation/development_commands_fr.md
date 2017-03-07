@@ -126,6 +126,40 @@ Lancer successivement les commandes suivantes :
 - Installer le plugin VirtualBox 'guest additions',
 - Changer dans le fichier vagrantfile le nom de la box de "debian/jessie64" pour "debian/contrib-jessie64" (box avec vbguest déjà installé)
 
+#### 3.1.3 Cahier de test et corrections
+
+- Copier le dernier fichier de recette: OGAM\documentation\4 - Intégration et recette\Dossier de tests Vx.x.x.doc,
+- Créer un nouveau fichier de recette en respectant la convention de nommage,
+- Lorqu'un nouveau bug est trouvé:
+	- Créer un ticket dans JIRA en indiquant la page et numéro de ligne du test dans les commentaires,
+	- Reporter le numéro de bug et le libellé dans le dossier de tests,
+	- Corriger le bug et le commiter sur la branche de recette.
+- Une fois les tests finis commiter le dossier de tests.
+
+#### 3.1.4 Merge de la branche de recette
+
+Une fois tous les bugs corrigés et que l'application est jugée suffisamment stable, il faut merger la branche sur la branche 'develop' et sur la branche 'master'.
+
+#### 3.1.4.1 Merge sur master
+
+- git fetch origin
+- git checkout Release_Vx.x.x
+- git pull
+- git checkout master
+- git pull
+- git merge --no-ff Release_Vx.x.x
+- git push origin master
+
+#### 3.1.4.2 Merge sur develop
+
+- git fetch origin
+- git checkout Release_Vx.x.x
+- git pull
+- git checkout master
+- git pull
+- git merge --no-ff Release_Vx.x.x
+- git push origin master
+
 ### 3.2 Lancer un test unitaire rapide (sans couverture) sur un contrôleur
 
 vagrant@ogam:/vagrant/ogam/website/htdocs/server/ogamServer$ **./vendor/phpunit/phpunit/phpunit --no-coverage --configuration ./phpunit.xml ./src/Ign/Bundle/OGAMBundle/Tests/Controller/QueryControllerTest.php**
