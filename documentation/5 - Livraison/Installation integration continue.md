@@ -59,6 +59,11 @@ JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT --ajp13Port=$
 L'URL devient 
 http://ogam-integration.ign.fr:8081/jenkins/
 
+Modifier le umasks :
+
+UMASK=002
+
+
 
 
 ### Installation de ANT
@@ -168,6 +173,8 @@ Ajout de GD pour l'export PDF de la fiche de détail
 
 > sudo apt-get install php5-gd
 
+Ajout de APC Cache
+> sudo apt-get install php-apc
 
 
 ### Installation de PostgreSQL
@@ -392,6 +399,13 @@ Test : Appeler l'URL http://ogam-integration.ign.fr/
 On doit avoir la page d'accueil du site OGAM
 La connexion avec l'utilisateur admin / admin doit fonctionner
 Cliquer sur le menu "Vérifier la configuration", tout doit être OK
+
+
+Mise à jour des droits pour Jenkins et Apache
+> sudo setfacl -R -m u:www-data:rwX server/
+> sudo setfacl -R -m u:www-data:rwX public/
+> sudo setfacl -R -m u:jenkins:rwX server/
+> sudo setfacl -R -m u:jenkins:rwX public/
 
 
 ### Installation de Tomcat
