@@ -138,7 +138,7 @@ Lancer successivement les commandes suivantes :
 
 #### 3.1.4 Merge de la branche de recette
 
-Une fois tous les bugs corrigés et que l'application est jugée suffisamment stable, il faut merger la branche sur la branche 'develop' et sur la branche 'master'.
+Une fois tous les bugs corrigés et que l'application est jugée suffisamment stable, il faut merger la branche sur la branche 'master' et sur la branche 'develop'.
 
 #### 3.1.4.1 Merge sur master
 
@@ -168,6 +168,14 @@ Jouer les lignes de commande suivantes:
 - git push origin develop
 
 Vérifier que tout est bien passé sur [gitlab](http://gitlab.dockerforge.ign.fr/ogam/ogam/network/develop).
+
+#### 3.1.5 Clôturer la version dans Jira
+
+Pour les tâches de la version:
+
+- Déplacer dans une version postérieure les tâches non cloturées si nécessaire,
+- Sélectionner toutes les tâches clôturées et les fermer via un traitement par lot,
+- Publier la version.
 
 ### 3.2 Lancer un test unitaire rapide (sans couverture) sur un contrôleur
 
