@@ -37,9 +37,45 @@ vagrant@ogam:/vagrant/ogam/website/htdocs/server/ogamServer$ **php composer.phar
 - Ouvrir le fichier de conf apache './vagrant_config/conf/apache/httpd_ogam.conf',
 - Remplacer le fichier 'app_dev.php' par le fichier 'app.php' à la ligne 66 et à la ligne 91,
 - Relancer apache avec la commande: 'vagrant@ogam:/vagrant/ogam$ **sudo service apache2 restart**',
-- Nettoyer le cache et le recréer.
+- Nettoyer le cache et le recréer,
+- Builder OgamDesktop pour la production (Cf 2.1.2).
 
 **Note:** Le fichier 'httpd_ogam.conf' étant lié et non recopié dans la vm, il n'est pas nécessaire de le recopier à nouveau (voir ligne 97 du fichier './vagrant_config/scripts/install_apache.sh').
+
+#### 1.1.4 Les proxys
+
+Il y a trois proxys différents dans OGAM:
+
+- ProxyController : Contrôleur Symfony contenant une seule action permettant d'accéder aux rapports de soumission,
+- mapserverProxy : Script php permettant d'accéder à mapserver directement sans passer par Symfony,
+- tilecacheProxy : Script php permettant d'accéder à tilecache directement sans passer par Symfony.
+
+##### 1.1.4.1 Débuguer une image vide via le proxy mapserver
+
+##### 1.1.4.1.1 Solution 1 : via les logs de mapserver
+
+vagrant@ogam:/vagrant/ogam/website/htdocs/logs$ **tail -n 100 mapserver_ogam.log**
+
+##### 1.1.4.1.2 Solution 2 : via le navigateur
+
+- Dans le fichier 'http_ogam.conf' mettre en commentaire les sept premières lignes pour autoriser l'accés à mapserver depuis le poste de développment:
+
+```
+	<Directory  "/usr/lib/cgi-bin">
+	    Options ExecCGI
+	    Order Deny,Allow
+		Deny from all
+		Allow from localhost 127.0.0.1
+	</Directory>
+```
+
+- Relancer apache avec la commande: ‘vagrant@ogam:/vagrant/ogam$ sudo service apache2 restart’,
+- Dans le fichier 'mapserverProxy.php':
+	- Mettre en commentaire les headers nécessaire en fonction du cas à tester (ex: header('Content-Type: image/png');),
+	- Décommenter la ligne 78 ('echo $uri;exit;') pour afficher la requête locale générée par le proxy,
+- Relancer la requête qui renvoie une image vide,
+- Copier-coller l'url générée dans un nouvel onglet du navigateur, remplacer 'localhost' par l'IP de la VM (par défaut: 192.168.50.4) et supprimer le paramètre 'EXCEPTIONS=BLANK' de l'url.
+- Ouvrir le fichier 'mapserv-ogam' téléchargé par le navigateur avec un editeur de text et consulter les logs d'erreur.
 
 ## 2 Côté client
 
@@ -59,11 +95,21 @@ vagrant@ogam:/vagrant/ogam/website/htdocs/client/ogamDesktop$ **sencha app build
 
 ## 3 Qualité
 
-### 3.1 Procédure à suivre sur son poste de travail pour réaliser une recette
+### 3.1 Procédure à suivre pour réaliser une recette
+
+#### 3.1.1 Création de la branche de recette
+
+- Ouvrir la page : 'http://gitlab.dockerforge.ign.fr/ogam/ogam/branches',
+- Cliquer sur le bouton 'New Branch',
+- Dans le champ 'Name for new branch', entrer le nom de la nouvelle branche (ex: Release_Vx.x.x),
+- Dans le champ 'Create from', entrer 'develop' pour créer la branche à partir du dernier commit de la branche 'develop'.
+
+#### 3.1.2 Création de la VM depuis zéro
 
 Ouvrir un Git Bash et se placer à la racine du projet (Répertoire contenant le dossier caché .git).
 
 Lancer successivement les commandes suivantes :
+
 - vagrant halt -f
 - vagrant destroy 
 - git fetch origin
@@ -79,6 +125,57 @@ Lancer successivement les commandes suivantes :
 
 - Installer le plugin VirtualBox 'guest additions',
 - Changer dans le fichier vagrantfile le nom de la box de "debian/jessie64" pour "debian/contrib-jessie64" (box avec vbguest déjà installé)
+
+#### 3.1.3 Cahier de tests et corrections
+
+- Copier le dernier fichier de recette: OGAM\documentation\4 - Intégration et recette\Dossier de tests Vx.x.x.doc,
+- Créer un nouveau fichier de recette en respectant la convention de nommage,
+- Lorqu'un nouveau bug est trouvé:
+	- Créer un ticket dans JIRA en indiquant la page et le numéro de ligne du test dans les commentaires,
+	- Reporter le numéro de bug et le libellé dans le dossier de tests,
+	- Corriger le bug et le commiter sur la branche de recette.
+- Une fois les tests finis commiter le dossier de tests.
+
+#### 3.1.4 Merge de la branche de recette
+
+Une fois tous les bugs corrigés et que l'application est jugée suffisamment stable, il faut merger la branche sur la branche 'master' et sur la branche 'develop'.
+
+#### 3.1.4.1 Merge sur master
+
+Jouer les lignes de commande suivantes:
+
+- git fetch origin
+- git checkout Release_Vx.x.x
+- git pull
+- git checkout master
+- git pull
+- git merge --no-ff -m "Merge version x.x.x" Release_Vx.x.x
+- git tag -a vx.x.x -m "Version x.x.x" HEAD
+- git push --tags origin master
+
+Vérifier que tout est bien passé sur [gitlab](http://gitlab.dockerforge.ign.fr/ogam/ogam/network/master).
+
+#### 3.1.4.2 Merge sur develop
+
+Jouer les lignes de commande suivantes:
+
+- git fetch origin
+- git checkout Release_Vx.x.x
+- git pull
+- git checkout develop
+- git pull
+- git merge --no-ff -m "Merge version x.x.x" Release_Vx.x.x
+- git push origin develop
+
+Vérifier que tout est bien passé sur [gitlab](http://gitlab.dockerforge.ign.fr/ogam/ogam/network/develop).
+
+#### 3.1.5 Clôturer la version dans Jira
+
+Pour les tâches de la version:
+
+- Déplacer dans une version postérieure les tâches non cloturées si nécessaire,
+- Sélectionner toutes les tâches clôturées et les fermer via un traitement par lot,
+- Publier la version.
 
 ### 3.2 Lancer un test unitaire rapide (sans couverture) sur un contrôleur
 
