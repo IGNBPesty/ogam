@@ -126,7 +126,11 @@ Lancer successivement les commandes suivantes :
 - Installer le plugin VirtualBox 'guest additions',
 - Changer dans le fichier vagrantfile le nom de la box de "debian/jessie64" pour "debian/contrib-jessie64" (box avec vbguest déjà installé)
 
-#### 3.1.3 Cahier de tests et corrections
+#### 3.1.3 Passer en mode 'production'
+
+Voir chapitre: "1.1.3 Passer en mode 'production'".
+
+#### 3.1.4 Cahier de tests et corrections
 
 - Copier le dernier fichier de recette: OGAM\documentation\4 - Intégration et recette\Dossier de tests Vx.x.x.doc,
 - Créer un nouveau fichier de recette en respectant la convention de nommage,
@@ -136,11 +140,11 @@ Lancer successivement les commandes suivantes :
 	- Corriger le bug et le commiter sur la branche de recette.
 - Une fois les tests finis commiter le dossier de tests.
 
-#### 3.1.4 Merge de la branche de recette
+#### 3.1.5 Merge de la branche de recette
 
 Une fois tous les bugs corrigés et que l'application est jugée suffisamment stable, il faut merger la branche sur la branche 'master' et sur la branche 'develop'.
 
-#### 3.1.4.1 Merge sur master
+#### 3.1.5.1 Merge sur master
 
 Jouer les lignes de commande suivantes:
 
@@ -155,7 +159,7 @@ Jouer les lignes de commande suivantes:
 
 Vérifier que tout est bien passé sur [gitlab](http://gitlab.dockerforge.ign.fr/ogam/ogam/network/master).
 
-#### 3.1.4.2 Merge sur develop
+#### 3.1.5.2 Merge sur develop
 
 Jouer les lignes de commande suivantes:
 
@@ -169,7 +173,7 @@ Jouer les lignes de commande suivantes:
 
 Vérifier que tout est bien passé sur [gitlab](http://gitlab.dockerforge.ign.fr/ogam/ogam/network/develop).
 
-#### 3.1.5 Clôturer la version dans Jira
+#### 3.1.6 Clôturer la version dans Jira
 
 Pour les tâches de la version:
 
