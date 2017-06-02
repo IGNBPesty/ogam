@@ -37,8 +37,8 @@ vagrant@ogam:/vagrant/ogam/website/htdocs/server/ogamServer$ **php composer.phar
 - Ouvrir le fichier de conf apache './vagrant_config/conf/apache/httpd_ogam.conf',
 - Remplacer le fichier 'app_dev.php' par le fichier 'app.php' à la ligne 66 et à la ligne 91,
 - Relancer apache avec la commande: 'vagrant@ogam:/vagrant/ogam$ **sudo service apache2 restart**',
-- Nettoyer le cache et le recréer,
-- Builder OgamDesktop pour la production (Cf 2.1.2).
+- Nettoyer le cache et le recréer (Voir chapitres: "1.1.1.3 Suppression du cache" et "1.1.1.2 Création du cache"),
+- Builder OgamDesktop pour la production (Voir chapitre: "2.1.2 Builder OgamDesktop pour la production").
 
 **Note:** Le fichier 'httpd_ogam.conf' étant lié et non recopié dans la vm, il n'est pas nécessaire de le recopier à nouveau (voir ligne 97 du fichier './vagrant_config/scripts/install_apache.sh').
 
@@ -83,15 +83,19 @@ vagrant@ogam:/vagrant/ogam/website/htdocs/logs$ **tail -n 100 mapserver_ogam.log
 
 #### 2.1.1 Builder OgamDesktop pour le développement
 
-vagrant@ogam:/vagrant/ogam/website/htdocs/client/ogamDesktop$ **sencha app build -c -e development**
+vagrant@ogam:/vagrant/ogam/website/htdocs/client/ogamDesktop$ **sencha app build -e development**
 
-**Note**: La commande est très lente dans la vm. Pour accélérer les performances lancer la commande directement dans Git Bash (Nécessite d'installer Sencha Cmd sur votre poste de travail).
+**Note**: La commande est très lente dans la vm. Pour accélérer les performances lancer la commande directement dans Git Bash (Nécessite d'installer Sencha Cmd (version identique à celle de la VM) sur votre poste de travail).
+
+**Note**: L'utilisation de l'option de build '-c' provoque la disparition des fichiers des builds précédents dans le cas d'un enchaînement de build. Un enchaînement de build est provoqué par la déclaration de plusieurs langues via le paramètre "locales" (ex: ["fr","en"]) du fichier "app.json".
 
 #### 2.1.2 Builder OgamDesktop pour la production
 
-vagrant@ogam:/vagrant/ogam/website/htdocs/client/ogamDesktop$ **sencha app build -c -e production**
+vagrant@ogam:/vagrant/ogam/website/htdocs/client/ogamDesktop$ **sencha app build -e production**
 
-**Note**: La commande est très lente dans la vm. Pour accélérer les performances lancer la commande directement dans Git Bash (Nécessite d'installer Sencha Cmd sur votre poste de travail).
+**Note**: La commande est très lente dans la vm. Pour accélérer les performances lancer la commande directement dans Git Bash (Nécessite d'installer Sencha Cmd (version identique à celle de la VM) sur votre poste de travail).
+
+**Note**: L'utilisation de l'option de build '-c' provoque la disparition des fichiers des builds précédents dans le cas d'un enchaînement de build. Un enchaînement de build est provoqué par la déclaration de plusieurs langues via le paramètre "locales" (ex: ["fr","en"]) du fichier "app.json".
 
 ## 3 Qualité
 
